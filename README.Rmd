@@ -28,7 +28,7 @@ The following data sources are needed for this report:
   - [Remaining Landfill Capacity](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity).
   - [Local authority collected waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables). Usually updated in January.
 
-Currently the last version used for this report:
+Currently the last version used for the 21/22 report:
   - WDI, published May 2022.
   - RLC, published February 2022.
   - LACW, published January 2022.
