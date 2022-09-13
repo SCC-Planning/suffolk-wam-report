@@ -34,5 +34,3 @@ Currently the last version used for the 21/22 report:
   - LACW, published January 2022.
 
 Note that all these sources may have updates or amendments throughout the year, meaning totals can change within and between years.
-
-Testing for render.
