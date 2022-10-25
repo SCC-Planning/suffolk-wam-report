@@ -51,7 +51,7 @@ scc_barchart_grouped <- function(data, x, y, group,
     geom_col(position = "dodge", colour = "#333333") +
     geom_hline(yintercept = 0, size = 1, colour = "#333333") +
     labs(title = title) +
-    scale_fill_manual(values = c("#2d6ca2", "#e8850c")) +
+    scale_fill_manual(values = c("#e2eefa", "#2d6ca2", "#e8850c")) +
     scc_style()
   # Optional, adding scc logo to the plot
   # annotation_custom(scc_logo, xmin = 5.0, xmax = 7.5, ymin = -125000, ymax = -50000) +

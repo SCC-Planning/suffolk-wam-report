@@ -1,7 +1,7 @@
 ---
 title: |
     Suffolk Waste Annual Monitoring Report
-    ![](C:\\Documents\\Waste Data\\scc_logo_background.png)  
+    ![](C:\\Documents\\suffolk-wam-report\\scc_logo_background.png)  
 author: 
     - Deborah Sacks, Sacks Consulting
     - Thomas Zwagerman, Suffolk County Council
@@ -64,26 +64,26 @@ source(here("R", "scc_barchart.R"))
 
 # Reading in and combining relevant data
 lacw <- read_ods(
-    here("Data","LA_and_Regional_Spreadsheet_2021_rev.ods"),
-    sheet = "Table_1",
-    skip = 3
+  here("Data","LA_and_Regional_Spreadsheet_2021_rev.ods"),
+  sheet = "Table_1",
+  skip = 3
 )
 
 districts <- c(
-    "Ipswich Borough Council",
-    "Mid Suffolk District Council",
-    "East Suffolk Council",
-    # Waveney and SCDC merged into East in 19-20
-    "Waveney District Council",
-    "Suffolk Coastal District Council",
-    # Forest Heath and St Edmunsbury mered into West in 19-20
-    "West Suffolk Council",
-    "Forest Heath District Council",
-    "St Edmundsbury Borough Council"
+  "Ipswich Borough Council",
+  "Mid Suffolk District Council",
+  "East Suffolk Council",
+  # Waveney and SCDC merged into East in 19-20
+  "Waveney District Council",
+  "Suffolk Coastal District Council",
+  # Forest Heath and St Edmunsbury mered into West in 19-20
+  "West Suffolk Council",
+  "Forest Heath District Council",
+  "St Edmundsbury Borough Council"
 )
 
 lacw_suffolk <- lacw %>%
-    filter(`Local Authority` %in% districts)
+  filter(`Local Authority` %in% districts)
 
 # Changing names to allow aggregating of former District Councils
 lacw_suffolk$`Local Authority` <- gsub("Waveney District Council", "East Suffolk Council", lacw_suffolk$`Local Authority`)
@@ -93,20 +93,20 @@ lacw_suffolk$`Local Authority` <- gsub("Forest Heath District Council", "West Su
 lacw_suffolk$`Local Authority` <- gsub("St Edmundsbury Borough Council", "West Suffolk Council", lacw_suffolk$`Local Authority`)
 
 lacw_suffolk <- lacw_suffolk %>%
-    select(-Region, -`ONS Code`, -`JPP order`, -`Authority type`) %>%
-    group_by(`Financial Year`, `Local Authority`) %>%
-    summarise(across(everything(), sum), .groups = "drop")
+  select(-Region, -`ONS Code`, -`JPP order`, -`Authority type`) %>%
+  group_by(`Financial Year`, `Local Authority`) %>%
+  summarise(across(everything(), sum), .groups = "drop")
 
 lacw_scc <- lacw %>%
-    filter(`Local Authority` == "Suffolk County Council")
+  filter(`Local Authority` == "Suffolk County Council")
 
 lacw_scc_21 <- lacw_scc %>%
-    filter(`Financial Year` == "2020-21") %>%
-    select(`Local Authority`,`Total local authority collected waste (tonnes)`)
+  filter(`Financial Year` == "2020-21") %>%
+  select(`Local Authority`,`Total local authority collected waste (tonnes)`)
 
 lacw_suffolk_21 <- lacw_suffolk %>%
-    filter(`Financial Year` == "2020-21") %>%
-    select(`Local Authority`,`Total local authority collected waste (tonnes)`)
+  filter(`Financial Year` == "2020-21") %>%
+  select(`Local Authority`,`Total local authority collected waste (tonnes)`)
 ```
 
 # Waste Managed in Suffolk
@@ -115,10 +115,10 @@ The total amount of Local Authority Collected Waste in Suffolk (LACW) has reduce
 ```{r totallocalauthority,  fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "\\label{fig:totallocalauthority}Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
 p1 <- scc_barchart(
-    lacw_scc,
-    lacw_scc$`Financial Year`,
-    lacw_scc$`Total local authority collected waste (tonnes)`,
-    "Total local authority collected waste (tonnes)"
+  lacw_scc,
+  lacw_scc$`Financial Year`,
+  lacw_scc$`Total local authority collected waste (tonnes)`,
+  "Total local authority collected waste (tonnes)"
 )
 
 p1
@@ -132,11 +132,11 @@ However, consumption overall may have reduced as a result of lower economic acti
 
 ```{r householdwaste, fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 p2 <- scc_barchart(
-    lacw_scc,
-    lacw_scc$`Financial Year`,
-    lacw_scc$`Household - total waste (tonnes)`,
-    "Household - total waste (tonnes)"
-    )
+  lacw_scc,
+  lacw_scc$`Financial Year`,
+  lacw_scc$`Household - total waste (tonnes)`,
+  "Household - total waste (tonnes)"
+)
 
 p2
 ```
@@ -146,11 +146,11 @@ The amount of LACW sent for recycling has steadily reduced over the last five ye
 
 ```{r sentforrecycling, fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 p3 <- scc_barchart(
-    lacw_scc,
-    lacw_scc$`Financial Year`,
-    lacw_scc$`Household - waste sent for recycling-composting-reuse (tonnes)`,
-    "Household - waste sent for recycling-composting-reuse (tonnes)"
-    )
+  lacw_scc,
+  lacw_scc$`Financial Year`,
+  lacw_scc$`Household - waste sent for recycling-composting-reuse (tonnes)`,
+  "Household - waste sent for recycling-composting-reuse (tonnes)"
+)
 
 p3
 ```
@@ -160,15 +160,15 @@ Suffolk historically had one of the highest recycling rates in England but this 
 ```{r recyclingrates, ft.align = "center", tab.id = "recyclingrates", label = "recyclingrates", tab.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
 recycling_rates <- lacw_scc %>%
-    mutate(recycling_rates = round((`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` / `Total local authority collected waste (tonnes)`* 100), 1)) %>%
-    select(`Financial Year`, recycling_rates)
+  mutate(recycling_rates = round((`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` / `Total local authority collected waste (tonnes)`* 100), 1)) %>%
+  select(`Financial Year`, recycling_rates)
 
 colnames(recycling_rates) <- c("Financial Year", "% sent for recycling")
 
 recycling_rates %>%
-    flextable() %>%
-    set_table_properties(layout = "autofit") %>%
-    theme_vanilla()
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  theme_vanilla()
 ```
 
 The LACW recycling rate is shown in Figure \@ref(fig:districtrecyclingratedistricts) for each of the Suffolk Districts.
@@ -179,23 +179,23 @@ From 2019 - 20 Suffolk Coastal District Council and Waveney District Council mer
 
 ```{r districtrecyclingratedistricts, message = FALSE, fig.alig = "center", fig.height = 8, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 district_plot <- lapply(unique(lacw_suffolk$`Local Authority`), function(authority) {
-    district_council <- lacw_suffolk %>%
-        filter(`Local Authority` == authority)
-
-    recycling_rates <- district_council %>%
-        mutate(recycling_rates = (`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` / `Total local authority collected waste (tonnes)`) * 100) %>%
-        select(`Financial Year`, recycling_rates)
-
-    colnames(recycling_rates) <- c("Financial Year", "% sent for recycling")
-
-    p4 <- scc_barchart_pct(
-        recycling_rates,
-        recycling_rates$`Financial Year`,
-        recycling_rates$`% sent for recycling`,
-        authority
-        )
-
-    p4
+  district_council <- lacw_suffolk %>%
+    filter(`Local Authority` == authority)
+  
+  recycling_rates <- district_council %>%
+    mutate(recycling_rates = (`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` / `Total local authority collected waste (tonnes)`) * 100) %>%
+    select(`Financial Year`, recycling_rates)
+  
+  colnames(recycling_rates) <- c("Financial Year", "% sent for recycling")
+  
+  p4 <- scc_barchart_pct(
+    recycling_rates,
+    recycling_rates$`Financial Year`,
+    recycling_rates$`% sent for recycling`,
+    authority
+  )
+  
+  p4
 })
 
 do.call(grid.arrange, c(district_plot, ncol = 1, top = "Recycling rate by district council"))
@@ -208,90 +208,94 @@ The amount of waste managed in all facilities in Suffolk increased from 2019 to 
 
 **TZ: In version 4 (as per 05/22) of the 2020 WDI, geographical descriptors have been removed from mobile plant permits. Suffolk totals can therefore not be calculated for 2020. For that reason I have also left 2019 out, to allow for comparison.**
 
-```{r wastecapacity, ft.align = "center", tab.id = "wastecapacity", label = "wastecapacity", tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
+```{r wastecapacity, ft.align = "center", tab.id = "wastecapacity", label = "wastecapacity", tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 # NOTE: the WDI is published in a .xlsb format, which is notoriously difficult to read.
 # A package, {xlsb} does exist with a read_xslb() function, unfortunately at the time of writing not available for my version of R.
 # So... the "YEAR Waste Received" sheet was copied into a standalone .xlsx file
 # Copy pasting data is generally bad practice (because it is prone to user error),
 # But I had no other option in this instance
-years_of_interest <- c("2019", "2020")
+years_of_interest <- c("2019", "2020", "2021")
 
 wdi_totals <- lapply(years_of_interest, function(year) {
-    wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
     filter(`Facility WPA` == "Suffolk")
-
-totals  <- wdi %>%
+  
+  totals  <- wdi %>%
     select(`Site Category`, `Tonnes Received`) %>%
     group_by(`Site Category`) %>%
     summarise(tonnes = sum(`Tonnes Received`))
-
-totals$year <- year
-
-return(totals)
+  
+  totals$year <- year
+  
+  return(totals)
 })
 
 wdi_totals <- bind_rows(wdi_totals)
 wdi_totals_table <- wdi_totals %>%
-    pivot_wider(names_from = `year`, values_from = `tonnes`)
+  pivot_wider(names_from = `year`, values_from = `tonnes`)
 
 wdi_totals_table <- wdi_totals_table %>%
-    filter(!`Site Category` %in% c("Landfill", "Storage", "Mobile Plant"))
+  filter(!`Site Category` %in% c("Landfill", "Storage", "Mobile Plant"))
 
-wdi_names <- c("Category", "2019", "2020")
+wdi_totals_table[is.na(wdi_totals_table)] <- 0
+
+wdi_names <- c("Category", "2019", "2020", "2021")
 colnames(wdi_totals_table) <- wdi_names
 
 treated_totals <- data.frame(
-    `Category` = c("Total waste treated in Suffolk"),
-    `2019` = sum(wdi_totals_table$`2019`),
-    `2020` = sum(wdi_totals_table$`2020`)
+  `Category` = c("Total waste treated in Suffolk"),
+  `2019` = sum(wdi_totals_table$`2019`),
+  `2020` = sum(wdi_totals_table$`2020`),
+  `2021` = sum(wdi_totals_table$`2021`)
 )
 colnames(treated_totals) <- wdi_names
 
 wdi_totals_table <- bind_rows(wdi_totals_table, treated_totals)
 wdi_totals_table$`2019` <- totals_formatting(wdi_totals_table$`2019`)
 wdi_totals_table$`2020` <- totals_formatting(wdi_totals_table$`2020`)
+wdi_totals_table$`2021` <- totals_formatting(wdi_totals_table$`2021`)
 
 wdi_totals_table %>%
-    flextable() %>%
-    set_table_properties(layout = "autofit") %>%
-    add_header_row(
-        colwidths = c(3),
-        values = c("Waste treated in facilities in Suffolk in 2019 and 2020 (tonnes)")
-    ) %>%
-    bold(i = 6, j = 1:3, part = "body") %>%
-    theme_vanilla() %>%
-    footnote(i = 6, j = 1, 
-    value = as_paragraph(c("Previous reports have included figures for 'Mobile Plants' sites. EA have removed geographical descriptors for this Category, so it can no longer be reported on County level. Therefore totals may be down from previous reports.")),
-     ref_symbols = c("*"),
-     part = "body")
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  add_header_row(
+    colwidths = c(4),
+    values = c("Waste treated in facilities in Suffolk in 2019, 2020 and 2021 (tonnes)")
+  ) %>%
+  bold(i = 7, j = 1:4, part = "body") %>%
+  theme_vanilla() %>%
+  footnote(i = 7, j = 1, 
+           value = as_paragraph(c("Previous reports have included figures for 'Mobile Plants' sites. EA have removed geographical descriptors for this Category, so it can no longer be reported on County level. Therefore totals may be down from previous reports.")),
+           ref_symbols = c("*"),
+           part = "body")
 ```
 
 To view breakdown and change for specific large sites, see Figure \@ref(fig:wastebysite).
 
-```{r wastebysite, warning = FALSE, message = FALSE, fig.height = 12, fig.width = 10, fig.cap = "Five largest sites selected. Only two incineration sites. Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
-years_of_interest <- c("2019", "2020")
+```{r wastebysite, warning = FALSE, message = FALSE, fig.height = 12, fig.width = 10, fig.cap = "Five largest sites selected. Only two incineration sites. Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
+years_of_interest <- c("2019", "2020", "2021")
 
 operators_ranked <- lapply(years_of_interest, function(year) {
-    wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
-        filter(`Facility WPA` == "Suffolk")
-
-    operator  <- wdi %>%
-        select(`Site Category`, `Tonnes Received`, `Site Name`) %>%
-        filter(!`Site Category` %in% c("Storage", "Mobile Plant")) %>%
-        group_by(`Site Category`, `Site Name`) %>%
-        summarise(tonnes = sum(`Tonnes Received`))
-
-        operators_ranked <- lapply(unique(operator$`Site Category`), function(category) {
-            df <- operator %>%
-                filter(`Site Category` == category)
-
-            df <- df[order(-df$tonnes),]
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+    filter(`Facility WPA` == "Suffolk")
+  
+  operator  <- wdi %>%
+    select(`Site Category`, `Tonnes Received`, `Site Name`) %>%
+    filter(!`Site Category` %in% c("Storage", "Mobile Plant")) %>%
+    group_by(`Site Category`, `Site Name`) %>%
+    summarise(tonnes = sum(`Tonnes Received`))
+  
+  operators_ranked <- lapply(unique(operator$`Site Category`), function(category) {
+    df <- operator %>%
+      filter(`Site Category` == category)
+    
+    df <- df[order(-df$tonnes),]
     return(df)
-})
-
-operators_ranked <- bind_rows(operators_ranked)
-operators_ranked$year <- year
-return(operators_ranked)
+  })
+  
+  operators_ranked <- bind_rows(operators_ranked)
+  operators_ranked$year <- year
+  return(operators_ranked)
 })
 
 operators_ranked <- bind_rows(operators_ranked)
@@ -299,24 +303,24 @@ operators_ranked <- bind_rows(operators_ranked)
 operators_ranked <- pivot_wider(operators_ranked, names_from = year, values_from = tonnes, values_fill = 0)
 
 plots <- lapply(unique(operators_ranked$`Site Category`), function(category) {
-    operators_plotted <- operators_ranked %>%
-        filter(`Site Category` == category) %>%
-        mutate(gap = `2020` - `2019`) %>%
-        arrange(desc(`2020`)) %>%
-        head(5)
-
-   p <-  ggplot(operators_plotted, aes(x = `2019`, xend = `2020`, y = reorder(`Site Name`, gap), group = `Site Name`)) + 
+  operators_plotted <- operators_ranked %>%
+    filter(`Site Category` == category) %>%
+    mutate(gap = `2021` - `2019`) %>%
+    arrange(desc(`2021`)) %>%
+    head(5)
+  
+  p <-  ggplot(operators_plotted, aes(x = `2019`, xend = `2021`, y = reorder(`Site Name`, gap), group = `Site Name`)) + 
     geom_dumbbell(colour = "#e2eefa",
-                    size = 3,
-                    colour_x = "#2d6ca2",
-                    colour_xend = "#e8850c") +
+                  size = 3,
+                  colour_x = "#2d6ca2",
+                  colour_xend = "#e8850c") +
     scc_style() +
-        labs(title= paste0(category, " sites (tonnes)"),
-            subtitle = "Change between <span style = 'color: #2d6ca2;'>**2019**</span> and <span style = 'color: #e8850c;'>**2020**</span><br>") +
-        theme(
-            plot.subtitle = element_markdown(size = 14, hjust = -.06)
-        )
-    return(p)
+    labs(title= paste0(category, " sites (tonnes)"),
+         subtitle = "Change between <span style = 'color: #2d6ca2;'>**2019**</span> and <span style = 'color: #e8850c;'>**2021**</span><br>") +
+    theme(
+      plot.subtitle = element_markdown(size = 14, hjust = -.06)
+    )
+  return(p)
 })
 
 do.call(grid.arrange, c(plots, ncol = 1))
@@ -324,9 +328,9 @@ do.call(grid.arrange, c(plots, ncol = 1))
 
 Total waste treated in Table \@ref(tab:wastecapacity) does not include landfill. Figure \@ref(fig:wastecapacityplot) shows Landfill alongside other categories, to give an idea of scale.
 
-```{r wastecapacityplot, fig.height = 4, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
+```{r wastecapacityplot, fig.height = 4, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_plotted <- wdi_totals %>%
-    filter(!`Site Category` %in% c("Mobile Plant", "Storage"))
+  filter(!`Site Category` %in% c("Mobile Plant", "Storage"))
 scc_barchart_grouped(wdi_plotted, wdi_plotted$`Site Category`, wdi_plotted$`tonnes`, wdi_plotted$year , "Waste treated in Suffolk (tonnes)")
 ```
 
@@ -337,20 +341,20 @@ Worlington Quarry operated by Frimstone received significant amounts of soil dep
 
 Shrublands Quarry, an inert landfill site operated by Brett Aggregates also received significant quantities of inert waste in 2019.
 
-```{r wastetolandfill, warning = FALSE, fig.alig = "center", fig.height = 6, fig.width = 8, fig.cap = "[Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
+```{r wastetolandfill, warning = FALSE, fig.alig = "center", fig.height = 6, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
 wdi_totals <- lapply(years_of_interest, function(year) {
-    wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
     filter(`Facility WPA` == "Suffolk")
-
-totals  <- wdi %>%
+  
+  totals  <- wdi %>%
     select(`Site Category`, `Site Name`, `Tonnes Received`) %>%
     group_by(`Site Category`, `Site Name`) %>%
     summarise(tonnes = sum(`Tonnes Received`), .groups = "drop")
-
-totals$year <- year
-
-return(totals)
+  
+  totals$year <- year
+  
+  return(totals)
 })
 
 landfill_totals <- bind_rows(wdi_totals)
@@ -360,113 +364,132 @@ landfill_totals$`Site Name` <- gsub("\\/", "", landfill_totals$`Site Name`)
 landfill_totals$`Site Name` <- gsub(" - ", "", landfill_totals$`Site Name`)
 
 landfill_totals <- landfill_totals %>%
-    filter(`Site Category` == "Landfill")
+  filter(`Site Category` == "Landfill")
 landfill_totals <- landfill_totals[order(-landfill_totals$tonnes),]
 scc_barchart_grouped(landfill_totals, landfill_totals$`Site Name`, landfill_totals$`tonnes`, landfill_totals$year , "Waste Received to Landfill in Suffolk (tonnes)") +
-    theme(axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
 ```
 
 ## Remaining landfill capacity
 Permitted landfill operators have a condition in their permits to report the remaining landfill void (capacity) of their sites at the end of the calendar year. Operators can claim commercial confidentiality. See Table \@ref(tab:tablc)
 
-```{r tablc, message = FALSE, warning = FALSE, ft.align = "center", tab.id='tablc', label = 'tablc', tab.cap = "Source: [Remaining Landfill Capacity 2019 and 2020](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
-capacity <- read_excel(here("Data", "2020_Remaining_Landfill_Capacity_v2.xlsx"), skip = 7)
+```{r tablc, message = FALSE, warning = FALSE, ft.align = "center", tab.id='tablc', label = 'tablc', tab.cap = "Source: [Remaining Landfill Capacity 2019, 2020 and 2021.](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
+
+capacity <- read_excel(here("Data", "2021_Remaining_Landfill_Capacity.xlsx"), skip = 7)
 
 capacity <- capacity %>%
-    filter(`Former Planning Sub Region` == "Suffolk") %>%
-    select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2020 (cubic metres)`)
+  filter(`Local Authority` == "Suffolk") %>%
+  select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2021 (cubic metres)`)
 
-capacity <- capacity[order(-capacity$`Remaining Capacity end 2020 (cubic metres)`),]
+capacity_2020 <- read_excel(here("Data", "2020_Remaining_Landfill_Capacity_v2.xlsx"), skip = 7)
+
+capacity_2020 <- capacity_2020 %>%
+  filter(`Former Planning Sub Region` == "Suffolk") %>%
+  select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2020 (cubic metres)`)
+
+capacity_2020 <- capacity_2020[order(-capacity_2020$`Remaining Capacity end 2020 (cubic metres)`),]
 
 capacity_2019 <- read_excel(here("Data", "2019 Remaining Landfill Capacity v2.xlsx"), skip = 7)
 
 capacity_2019 <- capacity_2019 %>%
-    filter(`Former Planning Sub Region` == "Suffolk") %>%
-    select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2019 (cubic metres)`)
-    
+  filter(`Former Planning Sub Region` == "Suffolk") %>%
+  select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2019 (cubic metres)`)
+
 capacity <- inner_join(capacity, capacity_2019)
+capacity <- inner_join(capacity, capacity_2020)
 
 capacity <- capacity %>%
-    select(Operator = `Operator Name`, Facility = `Facility Name`, `Site Type`,`2019` = `Remaining Capacity end 2019 (cubic metres)`, `2020` = `Remaining Capacity end 2020 (cubic metres)`)
+  select(
+    Operator = `Operator Name`, Facility = `Facility Name`, `Site Type`,
+    `2019` = `Remaining Capacity end 2019 (cubic metres)`,
+    `2020` = `Remaining Capacity end 2020 (cubic metres)`,
+    `2021` = `Remaining Capacity end 2021 (cubic metres)`
+  )
 
 capacity %>%
-    flextable() %>%
-    set_table_properties(layout = "autofit") %>%
-    add_header_row(
-        colwidths = c(5),
-        values = c("Remaining landfill capacity reported in Suffolk (cubic metres)")
-    ) %>%
-    theme_vanilla()
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  add_header_row(
+    colwidths = c(6),
+    values = c("Remaining landfill capacity reported in Suffolk (cubic metres)")
+  ) %>%
+  theme_vanilla()
 ```
 
 In Figure \@ref(fig:landfillcapacityplot) Landfill capacity change is shown between 2019 and 2020, for sites where there is capacity.
 
-```{r landfillcapacityplot, fig.height = 6, fig.width = 8, fig.cap = "Source: [Remaining Landfill Capacity 2019 and 2020](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
-capacity_plot <- pivot_longer(capacity, cols = c(`2019`, `2020`), names_to = "year", values_to = "cubic_metres")
+```{r landfillcapacityplot, fig.height = 6, fig.width = 8, fig.cap = "Source: [Remaining Landfill Capacity 2019, 2020 and 2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
+capacity_plot <- pivot_longer(
+  capacity, 
+  cols = c(`2019`, `2020`, `2021`), 
+  names_to = "year",
+  values_to = "cubic_metres"
+)
+
 capacity_plot <- capacity_plot %>%
-    filter(cubic_metres > 0)
+  filter(cubic_metres > 0)
 scc_barchart_grouped(capacity_plot, x = capacity_plot$Facility, y = capacity_plot$cubic_metres, group = capacity_plot$year, "Remaining Landfill capacity by Facility in Suffolk (cubic metres)") +
-    theme(axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(size = 10, angle = 45, hjust = 1))
 ```
 
 
 # Waste Movements 
-Suffolk largely achieves the goal of net self-sufficiency in the management of the waste arising within its area. This is demonstrated by the fact that there was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes**  in 2019 and a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020.
-This includes non-hazardous and inert wastes. The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3)
 
-```{r waste_managed_in_suffolk, ft.align = "center", tab.id='tab1', label = 'tab1', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
+```{r waste_managed_in_suffolk, ft.align = "center", tab.id='tab1', label = 'tab1', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_origin <- lapply(years_of_interest, function(year) {
-    wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
     filter(`Facility WPA` == "Suffolk")
-
-totals  <- wdi %>%
+  
+  totals  <- wdi %>%
     select(`Tonnes Received`, `Origin WPA`) %>%
     group_by(`Origin WPA`) %>%
     summarise(tonnes = sum(`Tonnes Received`))
-
-totals$year <- year
-
-return(totals)
+  
+  totals$year <- year
+  
+  return(totals)
 })
 
 relevant_counties <- c(
-    "Suffolk",
-    "Norfolk",
-    "Essex",
-    "Cambridgeshire",
-    "Peterborough"
+  "Suffolk",
+  "Norfolk",
+  "Essex",
+  "Cambridgeshire",
+  "Peterborough"
 )
 
 wdi_origin <- bind_rows(wdi_origin)
 counties <- wdi_origin %>%
-    filter(`Origin WPA` %in% relevant_counties)
+  filter(`Origin WPA` %in% relevant_counties)
 other <- wdi_origin %>%
-    filter(!`Origin WPA` %in% relevant_counties) %>%
-    select(tonnes, year) %>%
-    group_by(year) %>%
-    summarise(tonnes = sum(tonnes))
+  filter(!`Origin WPA` %in% relevant_counties) %>%
+  select(tonnes, year) %>%
+  group_by(year) %>%
+  summarise(tonnes = sum(tonnes))
 
 other$`Origin WPA` <- "Other"
 
 wdi_origin_table <- bind_rows(counties, other)
 
 wdi_origin_table <- wdi_origin_table %>%
-    pivot_wider(names_from = `year`, values_from = `tonnes`)
+  pivot_wider(names_from = `year`, values_from = `tonnes`)
 wdi_origin_table <- wdi_origin_table[(order(-wdi_origin_table$`2020`)),]
 
 suffolk_total <- wdi_origin_table %>%
-    filter(`Origin WPA` == "Suffolk")
+  filter(`Origin WPA` == "Suffolk")
 
 from_others <- data.frame(
-    `Origin` = c("Total waste managed origin outwith Suffolk"),
-    `2019` = sum(wdi_origin_table$`2019`) - suffolk_total$`2019`,
-    `2020` = sum(wdi_origin_table$`2020`) - suffolk_total$`2020`
+  `Origin` = c("Total waste managed origin outwith Suffolk"),
+  `2019` = sum(wdi_origin_table$`2019`) - suffolk_total$`2019`,
+  `2020` = sum(wdi_origin_table$`2020`) - suffolk_total$`2020`,
+  `2021` = sum(wdi_origin_table$`2021`) - suffolk_total$`2021`
 )
 
 managed_totals <- data.frame(
-    `Origin` = c("Total waste managed in Suffolk"),
-    `2019` = sum(wdi_origin_table$`2019`),
-    `2020` = sum(wdi_origin_table$`2020`)
+  `Origin` = c("Total waste managed in Suffolk"),
+  `2019` = sum(wdi_origin_table$`2019`),
+  `2020` = sum(wdi_origin_table$`2020`),
+  `2021` = sum(wdi_origin_table$`2021`)
 )
 colnames(from_others) <- colnames(wdi_origin_table)
 colnames(managed_totals) <- colnames(wdi_origin_table)
@@ -476,56 +499,58 @@ wdi_origin_table <- bind_rows(wdi_origin_table, managed_totals)
 
 wdi_origin_table$`2019` <- totals_formatting(wdi_origin_table$`2019`)
 wdi_origin_table$`2020` <- totals_formatting(wdi_origin_table$`2020`)
+wdi_origin_table$`2021` <- totals_formatting(wdi_origin_table$`2021`)
 
 wdi_origin_table %>%
-    flextable() %>%
-    set_table_properties(layout = "autofit") %>%
-    add_header_row(
-        colwidths = c(3),
-        values = c("All waste managed in Suffolk (tonnes)")
-    ) %>%
-    bold(i = 7:8, j = 1:3, part = "body") %>%
-    theme_vanilla()
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  add_header_row(
+    colwidths = c(4),
+    values = c("All waste managed in Suffolk (tonnes)")
+  ) %>%
+  bold(i = 7:8, j = 1:4, part = "body") %>%
+  theme_vanilla()
 ```
 
-```{r waste_to_landfill2, ft.align = "center", tab.id='tab2', label='tab2', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
+```{r waste_to_landfill2, ft.align = "center", tab.id='tab2', label='tab2', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_landfill <- lapply(years_of_interest, function(year) {
-    wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
     filter(`Facility WPA` == "Suffolk" & `Site Category` == "Landfill")
-
-totals  <- wdi %>%
+  
+  totals  <- wdi %>%
     select(`Tonnes Received`, `Origin WPA`) %>%
     group_by(`Origin WPA`) %>%
     summarise(tonnes = sum(`Tonnes Received`))
-
-totals$year <- year
-
-return(totals)
+  
+  totals$year <- year
+  
+  return(totals)
 })
 
 wdi_landfill <- bind_rows(wdi_landfill)
 counties_landfill <- wdi_landfill %>%
-    filter(`Origin WPA` %in% relevant_counties)
+  filter(`Origin WPA` %in% relevant_counties)
 other_landfill <- wdi_landfill %>%
-    filter(!`Origin WPA` %in% relevant_counties) %>%
-    select(tonnes, year) %>%
-    group_by(year) %>%
-    summarise(tonnes = sum(tonnes))
+  filter(!`Origin WPA` %in% relevant_counties) %>%
+  select(tonnes, year) %>%
+  group_by(year) %>%
+  summarise(tonnes = sum(tonnes))
 
 other_landfill$`Origin WPA` <- "Other"
 
 wdi_landfill_table <- bind_rows(counties_landfill, other_landfill)
 
 wdi_landfill_table <- wdi_landfill_table %>%
-    pivot_wider(names_from = `year`, values_from = `tonnes`)
+  pivot_wider(names_from = `year`, values_from = `tonnes`)
 wdi_landfill_table <- wdi_landfill_table[(order(-wdi_landfill_table$`2020`)),]
 
 wdi_landfill_table[is.na(wdi_landfill_table)] <- 0
 
 landfill_totals <- data.frame(
-    `Origin` = c("Landfill total in Suffolk"),
-    `2019` = sum(wdi_landfill_table$`2019`),
-    `2020` = sum(wdi_landfill_table$`2020`)
+  `Origin` = c("Landfill total in Suffolk"),
+  `2019` = sum(wdi_landfill_table$`2019`),
+  `2020` = sum(wdi_landfill_table$`2020`),
+  `2021` = sum(wdi_landfill_table$`2021`)
 )
 
 colnames(landfill_totals) <- colnames(wdi_landfill_table)
@@ -534,34 +559,35 @@ wdi_landfill_table <- bind_rows(wdi_landfill_table, landfill_totals)
 
 wdi_landfill_table$`2019` <- totals_formatting(wdi_landfill_table$`2019`)
 wdi_landfill_table$`2020` <- totals_formatting(wdi_landfill_table$`2020`)
+wdi_landfill_table$`2021` <- totals_formatting(wdi_landfill_table$`2021`)
 
 wdi_landfill_table %>%
-    flextable() %>%
-    set_table_properties(layout = "autofit") %>%
-    add_header_row(
-        colwidths = c(3),
-        values = c("Waste sent to landfill in Suffolk (tonnes)")
-    ) %>%
-    bold(i = 6, j = 1:3, part = "body") %>%
-    theme_vanilla()
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  add_header_row(
+    colwidths = c(4),
+    values = c("Waste sent to landfill in Suffolk (tonnes)")
+  ) %>%
+  bold(i = 6, j = 1:4, part = "body") %>%
+  theme_vanilla()
 
 ```
 
 The total amount of waste sent **from** Suffolk to other waste planning authority areas is relatively modest as shown in the table below:
 
-```{r waste_from_Suffolk, ft.align = "center", tab.id='tab3', label='tab3', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
+```{r waste_from_Suffolk, ft.align = "center", tab.id='tab3', label='tab3', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_export <- lapply(years_of_interest, function(year) {
-    wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
     filter(`Origin WPA` == "Suffolk" & `Facility WPA` != "Suffolk")
-
-totals  <- wdi %>%
+  
+  totals  <- wdi %>%
     select(`Tonnes Received`, `Facility WPA`) %>%
     group_by(`Facility WPA`) %>%
     summarise(tonnes = sum(`Tonnes Received`))
-
-totals$year <- year
-
-return(totals)
+  
+  totals$year <- year
+  
+  return(totals)
 })
 
 wdi_export <- bind_rows(wdi_export)
@@ -569,28 +595,29 @@ wdi_export <- bind_rows(wdi_export)
 wdi_export$`Facility WPA`[is.na(wdi_export$`Facility WPA`)] <- "Other"
 
 counties_export <- wdi_export %>%
-    filter(`Facility WPA` %in% relevant_counties)
+  filter(`Facility WPA` %in% relevant_counties)
 
 other_export <- wdi_export %>%
-    filter(!`Facility WPA` %in% relevant_counties) %>%
-    select(tonnes, year) %>%
-    group_by(year) %>%
-    summarise(tonnes = sum(tonnes))
+  filter(!`Facility WPA` %in% relevant_counties) %>%
+  select(tonnes, year) %>%
+  group_by(year) %>%
+  summarise(tonnes = sum(tonnes))
 
 other_export$`Facility WPA` <- "Other"
 
 wdi_export_table <- bind_rows(counties_export, other_export)
 
 wdi_export_table <- wdi_export_table %>%
-    pivot_wider(names_from = `year`, values_from = `tonnes`)
-wdi_export_table <- wdi_export_table[(order(-wdi_export_table$`2020`)),]
+  pivot_wider(names_from = `year`, values_from = `tonnes`)
+wdi_export_table <- wdi_export_table[(order(-wdi_export_table$`2021`)),]
 
 wdi_export_table[is.na(wdi_export_table)] <- 0
 
 export_totals <- data.frame(
-    `Origin` = c("Sent from Suffolk total"),
-    `2019` = sum(wdi_export_table$`2019`),
-    `2020` = sum(wdi_export_table$`2020`)
+  `Origin` = c("Sent from Suffolk total"),
+  `2019` = sum(wdi_export_table$`2019`),
+  `2020` = sum(wdi_export_table$`2020`),
+  `2021` = sum(wdi_export_table$`2021`)
 )
 
 colnames(export_totals) <- colnames(wdi_export_table)
@@ -599,68 +626,76 @@ wdi_export_table <- bind_rows(wdi_export_table, export_totals)
 
 wdi_export_table$`2019` <- totals_formatting(wdi_export_table$`2019`)
 wdi_export_table$`2020` <- totals_formatting(wdi_export_table$`2020`)
+wdi_export_table$`2021` <- totals_formatting(wdi_export_table$`2021`)
 
 wdi_export_table %>%
-    flextable() %>%
-    set_table_properties(layout = "autofit") %>%
-    add_header_row(
-        colwidths = c(3),
-        values = c("Waste sent to other authorities from Suffolk (tonnes)")
-    ) %>%
-    bold(i = 6, j = 1:3, part = "body") %>%
-    theme_vanilla()
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  add_header_row(
+    colwidths = c(4),
+    values = c("Waste sent to other authorities from Suffolk (tonnes)")
+  ) %>%
+  bold(i = 6, j = 1:4, part = "body") %>%
+  theme_vanilla()
 ```
+Suffolk largely achieves the goal of net self-sufficiency in the management of the waste arising within its area. This is demonstrated by the fact that there was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes**  in 2019, a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020 and a net flow into the county of **`r totals_formatting(from_others$"2021" - export_totals$"2021")` tonnes**
+This includes non-hazardous and inert wastes. The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3)
 
 ## Waste Water Treatment
 Of the tonnages sent from Suffolk to Norfolk, a large proportion comprised sludge which was sent to facilities managed by Anglian Water, as highlighted in Table \@ref(tab:tab4). 
 
-```{r suffolk_to_norfolk, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab4', label='tab4', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator)"}
+```{r suffolk_to_norfolk, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab4', label='tab4', tab.cap = "Source:  [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_norfolk <- lapply(years_of_interest, function(year) {
-    wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
     filter(`Origin WPA` == "Suffolk" & `Facility WPA` == "Norfolk")
-
-totals  <- wdi %>%
+  
+  totals  <- wdi %>%
     group_by(`Site Name`, `Operator`) %>%
     summarise(tonnes = sum(`Tonnes Received`))
-
-totals$year <- year
-
-return(totals)
+  
+  totals$year <- year
+  
+  return(totals)
 })
 
 wdi_norfolk <- bind_rows(wdi_norfolk)
 wdi_norfolk <- wdi_norfolk[order(-wdi_norfolk$tonnes),]
 
 aw2019 <- wdi_norfolk %>%
-    filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2019")
+  filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2019")
 
 aw2019 <- sum(aw2019$tonnes)
 
 aw2020 <- wdi_norfolk %>%
-    filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2020")
+  filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2020")
 
 aw2020 <- sum(aw2020$tonnes)
+
+aw2021 <- wdi_norfolk %>%
+  filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2021")
+
+aw2021 <- sum(aw2021$tonnes)
 
 wdi_norfolk$tonnes <- totals_formatting(wdi_norfolk$tonnes)
 
 wdi_norfolk <- pivot_wider(wdi_norfolk, names_from = year, values_from = tonnes)
 
-wdi_norfolk[1:6,] %>%
-    flextable() %>%
-    set_table_properties(layout = "autofit") %>%
-    add_header_row(
-        colwidths = c(4),
-        values = c("Waste sent to Norfolk from Suffolk (tonnes), highlighting Anglian Water")
-    ) %>%
-    #bold(i = c(1,3,6), j = 1:4, part = "body") %>%
-    bg(i = c(1,3,6), j = 1:4, part = "body", bg = "#e2eefa") %>%
-    # color(i = c(1,3,6), j = 1:4, part = "body", color = "white") %>%
-    theme_vanilla()
+wdi_norfolk[1:7,] %>%
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  add_header_row(
+    colwidths = c(5),
+    values = c("Waste sent to Norfolk from Suffolk (tonnes), highlighting Anglian Water")
+  ) %>%
+  #bold(i = c(1,3,6), j = 1:4, part = "body") %>%
+  bg(i = c(2,3,7), j = 1:5, part = "body", bg = "#e2eefa") %>%
+  # color(i = c(1,3,6), j = 1:4, part = "body", color = "white") %>%
+  theme_vanilla()
 ```
 
-In 2019, `r totals_formatting(aw2019)` tonnes of sludges were sent to Whitlingham Sludge Treatment Centre, Thetford Sludge Treatment Centre and King's Lynn Sludge Treatment Centre in Norfolk by Anglian Water. In 2020, `r totals_formatting(aw2020)` tonnes of sludges were sent to these facilities.
+In 2019, `r totals_formatting(aw2019)` tonnes of sludges were sent to Whitlingham Sludge Treatment Centre, Thetford Sludge Treatment Centre and King's Lynn Sludge Treatment Centre in Norfolk by Anglian Water. In 2020, `r totals_formatting(aw2020)` tonnes of sludges were sent to these facilities, and `r totals_formatting(aw2021)` in 2021.
 
-Although in 2020 the total nearly halved, this implies that there is still a shortage of waste water treatment capacity in Suffolk and discussions with the Anglian Water would be useful to identify their needs to enable Suffolk to become more self-sufficient in managing this waste stream.
+Although in 2020 the total nearly halved, the reduction 2021 has slowed. This implies that there is still a shortage of waste water treatment capacity in Suffolk and discussions with the Anglian Water would be useful to identify their needs to enable Suffolk to become more self-sufficient in managing this waste stream.
 
 # Performance of the Waste Policies and Conclusions
 The outcome of the waste planning process in Suffolk has been to deliver broadly sufficient capacity of waste management facilities to manage the waste arising within the County.This includes a wide variety of treatment facilities to manage different types of materials, an energy from waste facility to manage residual waste from household, commercial and industrial sources, and sufficient landfill to dispose of the remainder.
