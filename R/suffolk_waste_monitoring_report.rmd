@@ -43,7 +43,7 @@ knitr::opts_chunk$set(echo = FALSE)
 options(scipen=999)
 ```
 
-```{r reading_wdi}
+```{r reading_wdi, warning = FALSE, echo = FALSE}
 library(readr)
 library(readxl)
 library(readODS)
@@ -638,13 +638,13 @@ wdi_export_table %>%
   bold(i = 6, j = 1:4, part = "body") %>%
   theme_vanilla()
 ```
-Suffolk largely achieves the goal of net self-sufficiency in the management of the waste arising within its area. This is demonstrated by the fact that there was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes**  in 2019, a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020 and a net flow into the county of **`r totals_formatting(from_others$"2021" - export_totals$"2021")` tonnes**
+Suffolk largely achieves the goal of net self-sufficiency in the management of the waste arising within its area. This is demonstrated by the fact that there was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes**  in 2019, a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020 and a net flow out of the county of **`r totals_formatting(export_totals$"2021" - from_others$"2021")` tonnes**
 This includes non-hazardous and inert wastes. The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3)
 
 ## Waste Water Treatment
 Of the tonnages sent from Suffolk to Norfolk, a large proportion comprised sludge which was sent to facilities managed by Anglian Water, as highlighted in Table \@ref(tab:tab4). 
 
-```{r suffolk_to_norfolk, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab4', label='tab4', tab.cap = "Source:  [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
+```{r suffolk_to_norfolk, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab4', label='tab4', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_norfolk <- lapply(years_of_interest, function(year) {
   wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
     filter(`Origin WPA` == "Suffolk" & `Facility WPA` == "Norfolk")
@@ -679,6 +679,14 @@ aw2021 <- sum(aw2021$tonnes)
 wdi_norfolk$tonnes <- totals_formatting(wdi_norfolk$tonnes)
 
 wdi_norfolk <- pivot_wider(wdi_norfolk, names_from = year, values_from = tonnes)
+wdi_norfolk <- wdi_norfolk |> 
+  select(
+    `Site Name`,
+    Operator,
+    `2019`,
+    `2020`,
+    `2021`
+  )
 
 wdi_norfolk[1:7,] %>%
   flextable() %>%
@@ -696,6 +704,32 @@ wdi_norfolk[1:7,] %>%
 In 2019, `r totals_formatting(aw2019)` tonnes of sludges were sent to Whitlingham Sludge Treatment Centre, Thetford Sludge Treatment Centre and King's Lynn Sludge Treatment Centre in Norfolk by Anglian Water. In 2020, `r totals_formatting(aw2020)` tonnes of sludges were sent to these facilities, and `r totals_formatting(aw2021)` in 2021.
 
 Although in 2020 the total nearly halved, the reduction 2021 has slowed. This implies that there is still a shortage of waste water treatment capacity in Suffolk and discussions with the Anglian Water would be useful to identify their needs to enable Suffolk to become more self-sufficient in managing this waste stream.
+
+## Thetford Power Station: poultry litter incineration
+
+```{r thetford, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab5', label='tab5', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator).}
+
+wdi_thetford <- lapply(years_of_interest, function(year) {
+  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
+    filter(`Origin WPA` == "Suffolk" & `Facility WPA` == "Norfolk" & Operator == "EPR Thetford Limited")
+})
+
+wdi_norfolk[1:3,] %>%
+  flextable() %>%
+  set_table_properties(layout = "autofit") %>%
+  add_header_row(
+    colwidths = c(5),
+    values = c("Waste sent to Norfolk from Suffolk (tonnes), highlighting Thetford Power Station")
+  ) %>%
+  #bold(i = c(1,3,6), j = 1:4, part = "body") %>%
+  bg(i = c(1), j = 1:5, part = "body", bg = "#e2eefa") %>%
+  # color(i = c(1,3,6), j = 1:4, part = "body", color = "white") %>%
+  theme_vanilla()
+
+```
+
+One remarkable rise from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by `r wdi_thetford$Operator`. This waste falls under SOC Category `r wdi_thetford$"SOC Category"` and SOC Sub Category `r wdi_thetford$"SOC Sub Category"`, the waste is described as `r wdi_thetford$"EWC Waste Desc"`. Thetford Power Station is an Animal By-Products Incinerator, [converting poulty litter into electricity](https://www.mreuk.com/thetford).
+
 
 # Performance of the Waste Policies and Conclusions
 The outcome of the waste planning process in Suffolk has been to deliver broadly sufficient capacity of waste management facilities to manage the waste arising within the County.This includes a wide variety of treatment facilities to manage different types of materials, an energy from waste facility to manage residual waste from household, commercial and industrial sources, and sufficient landfill to dispose of the remainder.
