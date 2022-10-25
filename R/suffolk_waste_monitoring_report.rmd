@@ -36,14 +36,14 @@ This report looks at the effectiveness of the waste policies in delivering the p
 In particular it examines whether Suffolk is net self-sufficient in the management of the waste arising with the Plan Area or whether additional waste management facilities are required to achieve this.
 
 # Methodology
-The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator) and [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) that has been produced by the Environment Agency is the primary data source for the report, together with other data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables). Additionally,  [Remaining Landfill Capacity 2019](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used. 
+The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021]([2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that has been produced by the Environment Agency is the primary data source for the report, together with other data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables). Additionally,[Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used. 
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 options(scipen=999)
 ```
 
-```{r reading_wdi, warning = FALSE, echo = FALSE}
+```{r reading_wdi, include = FALSE}
 library(readr)
 library(readxl)
 library(readODS)
@@ -707,7 +707,7 @@ Although in 2020 the total nearly halved, the reduction 2021 has slowed. This im
 
 ## Thetford Power Station: poultry litter incineration
 
-```{r thetford, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab5', label='tab5', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator).}
+```{r thetford, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab5', label='tab5', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
 wdi_thetford <- lapply(years_of_interest, function(year) {
   wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
@@ -728,7 +728,7 @@ wdi_norfolk[1:3,] %>%
 
 ```
 
-One remarkable rise from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by `r wdi_thetford$Operator`. This waste falls under SOC Category `r wdi_thetford$"SOC Category"` and SOC Sub Category `r wdi_thetford$"SOC Sub Category"`, the waste is described as `r wdi_thetford$"EWC Waste Desc"`. Thetford Power Station is an Animal By-Products Incinerator, [converting poulty litter into electricity](https://www.mreuk.com/thetford).
+One remarkable rise from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by EPR Thetford Limited. This waste falls under SOC Category "09 - Animal and vegetable wastes" and SOC Sub Category "Slurry and manure", the waste is described as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site". Thetford Power Station is an Animal By-Products Incinerator, [which converts poulty litter into electricity](https://www.mreuk.com/thetford).
 
 
 # Performance of the Waste Policies and Conclusions
