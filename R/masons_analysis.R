@@ -511,9 +511,9 @@ wdi_masons$`Site Name` <- gsub("Folly Farm Waste Management Facility", "Folly Fa
 wdi_masons$`Site Name` <- gsub("Shrublands Quarry Landfill", "Shrublands Quarry", wdi_masons$`Site Name`)
 
 p9_barchart <- ggplot(data = wdi_masons, 
-                       aes(x = `Site Name`,
-                           y = tonnes,
-                           fill = `Basic Waste Cat`)) +
+                      aes(x = `Site Name`,
+                          y = tonnes,
+                          fill = `Basic Waste Cat`)) +
   geom_bar(stat = "identity", 
            position = "fill") +
   scc_style() +
@@ -533,4 +533,36 @@ finalise_plot(
   save_filepath = here("plots", "barchart_Type_of_Waste_Managed_Landfill_Site.png"),
   width_pixels = 800,
   height_pixels = 500
+)
+
+# Types of waste received by Masons Landfill
+wdi <- read_excel(here("Data", paste0(2020," Waste Received.xlsx"))) %>%
+  filter(`Facility WPA` == "Suffolk")
+
+wdi_hshld_site  <- wdi %>%
+  filter(`Basic Waste Cat` == "Hhold/Ind/Com") |> 
+  select(`Site Name`, `Tonnes Received`) |> 
+  group_by(`Site Name`) |> 
+  summarise(tonnes = sum(`Tonnes Received`)) |> 
+  top_n(5) |> 
+  arrange(desc(tonnes))
+
+scc_barchart(wdi_hshld, x = wdi_hshld$`Site Name`, y = wdi_hshld$tonnes, "Hhold/Ind/Com Waste Destination in Suffolk (tonnes)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+wdi_hshld_cat <- wdi |> 
+  filter(`Basic Waste Cat` == "Hhold/Ind/Com") |> 
+  select(`Site Category`, `Tonnes Received`) |>
+  group_by(`Site Category`) |> 
+  summarise(tonnes = sum(`Tonnes Received`))
+  
+scc_barchart(wdi_hshld_cat, x = wdi_hshld_cat$`Site Category`, y = wdi_hshld_cat$tonnes, "Hhold/Ind/Com Waste Managed Category in Suffolk (tonnes)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+scc_piechart(
+  wdi_hshld_cat,
+  wdi_hshld_cat$tonnes,
+  wdi_hshld_cat$`Site Category`,
+  title = "Hhold/Ind/Com Waste Managed Category in Suffolk",
+  subtitle = paste("Total of", totals_formatting(sum(wdi_hshld_cat$tonnes)), "tonnes in 2020")
 )
