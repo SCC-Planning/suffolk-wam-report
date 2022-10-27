@@ -754,7 +754,7 @@ wdi_norfolk[1:3,] %>%
 
 One remarkable rise from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by EPR Thetford Limited.
 This waste falls under SOC Category "09 - Animal and vegetable wastes" and SOC Sub Category "Slurry and manure", the waste is described as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site".
-Thetford Power Station is an Animal By-Products Incinerator, [which converts poulty litter into electricity](https://www.mreuk.com/thetford).
+Thetford Power Station is an Animal By-Products Incinerator, [which converts poultry litter into electricity](https://www.mreuk.com/thetford).
 
 # Performance of the Waste Policies and Conclusions
 
