@@ -544,25 +544,86 @@ wdi_hshld_site  <- wdi %>%
   select(`Site Name`, `Tonnes Received`) |> 
   group_by(`Site Name`) |> 
   summarise(tonnes = sum(`Tonnes Received`)) |> 
-  top_n(5) |> 
+  # top_n(5) |> 
   arrange(desc(tonnes))
+  
+wdi_hshld_site$`Site Name` <- gsub("EPR", "", wdi_hshld_site$`Site Name`)
+wdi_hshld_site$`Site Name` <- gsub("BV4517IM", "", wdi_hshld_site$`Site Name`)
+wdi_hshld_site$`Site Name` <- gsub("\\/", "", wdi_hshld_site$`Site Name`)
+wdi_hshld_site$`Site Name` <- gsub(" - ", "", wdi_hshld_site$`Site Name`)
+wdi_hshld_site$`Site Name` <- gsub("  WP3438HZ", "", wdi_hshld_site$`Site Name`)
+wdi_hshld_site$`Site Name` <- gsub(" BP3635LA", "", wdi_hshld_site$`Site Name`)
 
-scc_barchart(wdi_hshld, x = wdi_hshld$`Site Name`, y = wdi_hshld$tonnes, "Hhold/Ind/Com Waste Destination in Suffolk (tonnes)") +
+wdi_hshld_site <- wdi_hshld_site[order(-wdi_hshld_site$tonnes),]
+
+top_5 <- wdi_hshld_site |> 
+  top_n(5)
+
+p10_barchart <- scc_barchart(top_5, x = top_5$`Site Name`, y = top_5$tonnes,
+                             "Hhold/Ind/Com Waste Site Destination in Suffolk (tonnes)",
+                             paste("Top five recipients. Total of", totals_formatting(sum(wdi_hshld_cat$tonnes)), "tonnes in 2020 for all recipients.")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+scc_piechart(
+  wdi_hshld_site,
+  wdi_hshld_site$tonnes,
+  wdi_hshld_site$`Site Name`,
+  title = "Hhold/Ind/Com Waste Site Destination in Suffolk (tonnes)",
+  subtitle = paste("Total of", totals_formatting(sum(wdi_hshld_cat$tonnes)), "tonnes in 2020")
+)
+
+finalise_plot(
+  p10_barchart,
+  source = "Environment Agency Waste Data Interrogator 2020",
+  save_filepath = here("plots", "barchart_Hhold_Waste_Destination_by_Site.png"),
+  width_pixels = 640,
+  height_pixels = 450
+)
 
 wdi_hshld_cat <- wdi |> 
   filter(`Basic Waste Cat` == "Hhold/Ind/Com") |> 
   select(`Site Category`, `Tonnes Received`) |>
   group_by(`Site Category`) |> 
   summarise(tonnes = sum(`Tonnes Received`))
-  
-scc_barchart(wdi_hshld_cat, x = wdi_hshld_cat$`Site Category`, y = wdi_hshld_cat$tonnes, "Hhold/Ind/Com Waste Managed Category in Suffolk (tonnes)") +
+
+p11_barchart <- scc_barchart(wdi_hshld_cat, x = wdi_hshld_cat$`Site Category`, y = wdi_hshld_cat$tonnes, "Hhold/Ind/Com Waste Managed by Category in Suffolk (tonnes)") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+finalise_plot(
+  p11_barchart,
+  source = "Environment Agency Waste Data Interrogator 2020",
+  save_filepath = here("plots", "barchart_Hhold_Waste_Destination_by_Category.png"),
+  width_pixels = 640,
+  height_pixels = 450
+)
   
-scc_piechart(
+p10_piechart <- scc_piechart(
   wdi_hshld_cat,
   wdi_hshld_cat$tonnes,
   wdi_hshld_cat$`Site Category`,
   title = "Hhold/Ind/Com Waste Managed Category in Suffolk",
+  subtitle = paste("Total of", totals_formatting(sum(wdi_hshld_cat$tonnes)), "tonnes in 2020")
+)
+
+finalise_plot(
+  p10_piechart,
+  source = "Environment Agency Waste Data Interrogator 2020",
+  save_filepath = here("plots", "2020_piechart_Hhold_Waste_Destination_by_Category.png"),
+  width_pixels = 640,
+  height_pixels = 450
+)
+
+# Municipal Waste
+wdi_municipal <- wdi |> 
+  filter(`EWC Chapter` == "20 - MUNICIPAL WASTES") |> 
+  select(`Site Category`, `Tonnes Received`) |>
+  group_by(`Site Category`) |> 
+  summarise(tonnes = sum(`Tonnes Received`))
+
+scc_piechart(
+  wdi_municipal,
+  wdi_municipal$tonnes,
+  wdi_municipal$`Site Category`,
+  title = "Municipal Waste Managed Category in Suffolk",
   subtitle = paste("Total of", totals_formatting(sum(wdi_hshld_cat$tonnes)), "tonnes in 2020")
 )

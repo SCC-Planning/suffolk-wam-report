@@ -52,5 +52,6 @@ rsconnect/
 /Data
 /font
 /Output
+/plots
 *.png
 *.docx
