@@ -45,6 +45,18 @@ lapply(list.files("R", full.names = TRUE), tar_source)
 # Replace the target list below with your own:
 list(
   tar_target(
-    render, rmarkdown::render_site()
+    folder, here::here("Data")
+  ),
+  tar_target(
+    wdi_data, read_wdi(folder)
+  ),
+  tar_target(
+    lacw_data, read_lacw(folder)
+  ),
+  tar_target(
+    rlc_data, read_rcl(folder)
+  ),
+  tar_target(
+    wam_report, render_wam_report_site(wdi_data, lacw_data, rlc_data)
   )
 )

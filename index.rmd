@@ -52,13 +52,8 @@ options(scipen=999)
 ```
 
 ```{r reading_wdi, include = FALSE}
+lacw <- wamreport$lacw
 # Reading in and combining relevant data
-lacw <- read_ods(
-  here("Data","LA_and_Regional_Spreadsheet_2021_rev.ods"),
-  sheet = "Table_1",
-  skip = 3
-)
-
 districts <- c(
   "Ipswich Borough Council",
   "Mid Suffolk District Council",
@@ -209,11 +204,7 @@ Shown in Table \@ref(tab:wastecapacity) The amount of waste managed in all facil
 # So... the "YEAR Waste Received" sheet was copied into a standalone .xlsx file
 # Copy pasting data is generally bad practice (because it is prone to user error),
 # But I had no other option in this instance
-years_of_interest <- c("2019", "2020", "2021")
-
-wdi_totals <- get_wdi_totals(years_of_interest)
-
-wdi_totals_table <- wdi_totals %>%
+wdi_totals_table <- wamreport$wdi_totals %>%
   pivot_wider(names_from = `year`, values_from = `tonnes`)
 
 wdi_totals_table <- wdi_totals_table %>%
@@ -255,9 +246,7 @@ wdi_totals_table %>%
 To view breakdown and change for specific large sites, see Figure \@ref(fig:wastebysite).
 
 ```{r wastebysite, warning = FALSE, message = FALSE, fig.height = 12, fig.width = 10, fig.cap = "Five largest sites selected. Only two incineration sites. Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
-years_of_interest <- c("2019", "2020", "2021")
-
-operators_ranked <- get_operators_ranked(years_of_interest)
+operators_ranked <- wamreport$operators_ranked
 
 plots <- lapply(unique(operators_ranked$`Site Category`), function(category) {
   operators_plotted <- operators_ranked %>%
@@ -287,7 +276,7 @@ Total waste treated in Table \@ref(tab:wastecapacity) does not include landfill.
 Figure \@ref(fig:wastecapacityplot) shows Landfill alongside other categories, to give an idea of scale.
 
 ```{r wastecapacityplot, fig.height = 4, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
-wdi_plotted <- wdi_totals %>%
+wdi_plotted <- wamreport$wdi_totals %>%
   filter(!`Site Category` %in% c("Mobile Plant", "Storage"))
 
 scc_barchart_grouped(
@@ -296,7 +285,7 @@ scc_barchart_grouped(
   "tonnes",
   "year",
   title = "Waste treated in Suffolk (tonnes)"
-  ) +
+) +
   scale_fill_manual(values = c("#e2eefa", "#2d6ca2", "#e8850c"))
 
 ```
@@ -315,7 +304,7 @@ Shrublands Quarry, an inert landfill site operated by Brett Aggregates also rece
 
 ```{r wastetolandfill, warning = FALSE, fig.alig = "center", fig.height = 6, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
-landfill_totals <- get_wdi_totals_by_site(years_of_interest)
+landfill_totals <- wamreport$landfill_waste
 landfill_totals$`Site Name` <- gsub("EPR", "", landfill_totals$`Site Name`)
 landfill_totals$`Site Name` <- gsub("BV4517IM", "", landfill_totals$`Site Name`)
 landfill_totals$`Site Name` <- gsub("\\/", "", landfill_totals$`Site Name`)
@@ -332,7 +321,7 @@ scc_barchart_grouped(
   "tonnes",
   "year",
   title = "Waste Received to Landfill in Suffolk (tonnes)"
-  ) +
+) +
   theme(axis.text.x = element_text(size = 10, angle = 45, hjust = 1)) +
   scale_fill_manual(values = c("#e2eefa", "#2d6ca2", "#e8850c"))
 ```
@@ -345,28 +334,11 @@ See Table \@ref(tab:tablc)
 
 ```{r tablc, message = FALSE, warning = FALSE, ft.align = "center", tab.id='tablc', label = 'tablc', tab.cap = "Source: [Remaining Landfill Capacity 2019, 2020 and 2021.](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
 
-capacity <- read_excel(here("Data", "2021_Remaining_Landfill_Capacity.xlsx"), skip = 7)
-
-capacity <- capacity %>%
-  filter(`Local Authority` == "Suffolk") %>%
-  select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2021 (cubic metres)`)
-
-capacity_2020 <- read_excel(here("Data", "2020_Remaining_Landfill_Capacity_v2.xlsx"), skip = 7)
-
-capacity_2020 <- capacity_2020 %>%
-  filter(`Former Planning Sub Region` == "Suffolk") %>%
-  select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2020 (cubic metres)`)
-
-capacity_2020 <- capacity_2020[order(-capacity_2020$`Remaining Capacity end 2020 (cubic metres)`),]
-
-capacity_2019 <- read_excel(here("Data", "2019 Remaining Landfill Capacity v2.xlsx"), skip = 7)
-
-capacity_2019 <- capacity_2019 %>%
-  filter(`Former Planning Sub Region` == "Suffolk") %>%
-  select(`Operator Name`, `Facility Name`, `Site Type`, `Remaining Capacity end 2019 (cubic metres)`)
-
-capacity <- inner_join(capacity, capacity_2019)
-capacity <- inner_join(capacity, capacity_2020)
+capacity <- pivot_wider(
+  wamreport$rlc,
+  names_from = year,
+  values_from = `Remaining Capacity (cubic metres)`
+)
 
 capacity <- capacity %>%
   select(
@@ -412,7 +384,7 @@ scc_barchart_grouped(
 # Waste Movements
 
 ```{r waste_managed_in_suffolk, ft.align = "center", tab.id='tab1', label = 'tab1', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
-wdi_origin <- get_waste_origin(years_of_interest)
+wdi_origin <- wamreport$waste_origin
 
 relevant_counties <- c(
   "Suffolk",
@@ -476,7 +448,7 @@ wdi_origin_table %>%
 ```
 
 ```{r waste_to_landfill2, ft.align = "center", tab.id='tab2', label='tab2', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
-wdi_landfill <- get_landfill_waste(years_of_interest)
+wdi_landfill <- wamreport$landfill_waste
 
 counties_landfill <- wdi_landfill %>%
   filter(`Origin WPA` %in% relevant_counties)
@@ -526,7 +498,7 @@ wdi_landfill_table %>%
 The total amount of waste sent **from** Suffolk to other waste planning authority areas is relatively modest as shown in the table below:
 
 ```{r waste_from_Suffolk, ft.align = "center", tab.id='tab3', label='tab3', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
-wdi_export <- get_waste_destination(years_of_interest)
+wdi_export <- wamreport$waste_destination
 
 wdi_export$`Facility WPA`[is.na(wdi_export$`Facility WPA`)] <- "Other"
 
@@ -584,11 +556,7 @@ The net flow is calculated by taking the "Total waste managed origin outwith Suf
 Of the tonnages sent from Suffolk to Norfolk, a large proportion comprised sludge which was sent to facilities managed by Anglian Water, as highlighted in Table \@ref(tab:tab4).
 
 ```{r suffolk_to_norfolk, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab4', label='tab4', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
-wdi_norfolk <- get_waste_between_wpas(
-  years_of_interest,
-  origin = "Suffolk",
-  destination = "Norfolk"
-)
+wdi_norfolk <- wamreport$od_waste
 
 aw2019 <- wdi_norfolk %>%
   filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2019")
@@ -640,10 +608,8 @@ This implies that there is still a shortage of waste water treatment capacity in
 
 ```{r thetford, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab5', label='tab5', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
-wdi_thetford <- lapply(years_of_interest, function(year) {
-  wdi <- read_excel(here("Data", paste0(year," Waste Received.xlsx"))) %>%
-    filter(`Origin WPA` == "Suffolk" & `Facility WPA` == "Norfolk" & Operator == "EPR Thetford Limited")
-})
+wdi_thetford <- wamreport$wdi_all |> 
+  filter(`Origin WPA` == "Suffolk" & `Facility WPA` == "Norfolk" & Operator == "EPR Thetford Limited")
 
 wdi_norfolk[1:3,] %>%
   flextable() %>%
