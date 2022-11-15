@@ -1,5 +1,5 @@
 ---
-title: "Suffolk Waste Annual Monitoring Report"
+title: "WIP: Suffolk Waste Annual Monitoring Report"
 author: 
     - Deborah Sacks, Sacks Consulting
     - Thomas Zwagerman, Suffolk County Council
@@ -7,7 +7,7 @@ date: "`r Sys.Date()`"
 scctemplate:
   navigation:
     breadcrumb_trail:
-      - text: "Suffolk Waste Annual Monitoring Report"
+      - text: "WORK IN PROGRESS - Suffolk Waste Annual Monitoring Report"
 output:
   html_document:
     template: _template.html
