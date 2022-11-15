@@ -50,6 +50,7 @@ rsconnect/
 
 # Other folders
 /Data
+/template_libs
 /font
 /Output
 /plots
