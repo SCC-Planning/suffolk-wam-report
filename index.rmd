@@ -304,7 +304,7 @@ Shrublands Quarry, an inert landfill site operated by Brett Aggregates also rece
 
 ```{r wastetolandfill, warning = FALSE, fig.alig = "center", fig.height = 6, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
-landfill_totals <- wamreport$landfill_waste
+landfill_totals <- wamreport$totals_by_site
 landfill_totals$`Site Name` <- gsub("EPR", "", landfill_totals$`Site Name`)
 landfill_totals$`Site Name` <- gsub("BV4517IM", "", landfill_totals$`Site Name`)
 landfill_totals$`Site Name` <- gsub("\\/", "", landfill_totals$`Site Name`)
@@ -333,20 +333,11 @@ Operators can claim commercial confidentiality.
 See Table \@ref(tab:tablc)
 
 ```{r tablc, message = FALSE, warning = FALSE, ft.align = "center", tab.id='tablc', label = 'tablc', tab.cap = "Source: [Remaining Landfill Capacity 2019, 2020 and 2021.](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
-
 capacity <- pivot_wider(
   wamreport$rlc,
   names_from = year,
   values_from = `Remaining Capacity (cubic metres)`
 )
-
-capacity <- capacity %>%
-  select(
-    Operator = `Operator Name`, Facility = `Facility Name`, `Site Type`,
-    `2019` = `Remaining Capacity end 2019 (cubic metres)`,
-    `2020` = `Remaining Capacity end 2020 (cubic metres)`,
-    `2021` = `Remaining Capacity end 2021 (cubic metres)`
-  )
 
 capacity %>%
   flextable() %>%

@@ -22,13 +22,13 @@ get_wdi_totals_by_site <- function(wdi_data, county) {
   wdi <- wdi_data |>
     dplyr::filter(`Facility WPA` == county)
   
-  totals  <- wdi |>
+  totals_by_site  <- wdi |>
     dplyr::select(`Site Category`, `Site Name`, `Tonnes Received`, `year`) |> 
     dplyr::group_by(`Site Category`, `Site Name`, `year`) |> 
     dplyr::summarise(tonnes = sum(`Tonnes Received`), .groups = "drop")
   
   
-  return(wdi_totals)
+  return(totals_by_site)
 }
 
 #' Obtain the wdi totals for all operators
