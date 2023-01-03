@@ -90,8 +90,8 @@ get_waste_between_wpas <- function(wdi_data, origin, destination) {
   wdi <- wdi_data |> 
     dplyr::filter(`Origin WPA` == origin & `Facility WPA` == destination)
   
-  totals_between_wpas  <- wdi %>%
-    dplyr::group_by(`Site Name`, `Operator`, `year`) %>%
+  totals_between_wpas  <- wdi |> 
+    dplyr::group_by(`Site Name`, `Operator`, `year`) |> 
     dplyr::summarise(tonnes = sum(`Tonnes Received`))
   
   totals_between_wpas <- totals_between_wpas[order(-totals_between_wpas$tonnes),]
