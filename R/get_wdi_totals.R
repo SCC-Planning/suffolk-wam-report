@@ -11,7 +11,7 @@ get_wdi_totals <- function(wdi_data, county) {
     dplyr::group_by(`Site Category`, `year`) |>
     dplyr::summarise(tonnes = sum(`Tonnes Received`))
   
-  return(wdi_totals)
+  return(totals)
 }
 
 #' Obtain the wdi totals for relevant years with sitename
