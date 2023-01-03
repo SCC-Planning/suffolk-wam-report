@@ -39,7 +39,7 @@ options(clustermq.scheduler = "multiprocess")
 # Install packages {{future}}, {{future.callr}}, and {{future.batchtools}} to allow use_targets() to configure tar_make_future() options.
 
 # Run the R scripts in the R/ folder with your custom functions:
-lapply(list.files("R", full.names = TRUE), tar_source)
+# lapply(list.files("R", full.names = TRUE), tar_source)
 tar_source()
 # source("other_functions.R") # Source other scripts as needed. # nolint
 
