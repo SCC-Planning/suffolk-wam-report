@@ -6,7 +6,7 @@
 read_rcl <- function(folder) {
   rlc_files <- list.files(folder)
   
-  rlc_files <- str_subset(rlc_files, "Landfill")
+  rlc_files <- stringr::str_subset(rlc_files, "Landfill")
   rlc_files <- paste0(folder, rlc_files)
   
   rlc <- lapply(rlc_files, function(file_to_read) {
@@ -31,6 +31,6 @@ read_rcl <- function(folder) {
     return(capacity)
   })
   
-  rlc <- bind_rows(rlc)
+  rlc <- dplyr::bind_rows(rlc)
 }
 

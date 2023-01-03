@@ -15,6 +15,7 @@ tar_option_set(
     "readODS",
     "here",
     "dplyr",
+    "stringr",
     "tidyr",
     "kableExtra",
     "flextable",
@@ -39,7 +40,7 @@ options(clustermq.scheduler = "multiprocess")
 
 # Run the R scripts in the R/ folder with your custom functions:
 lapply(list.files("R", full.names = TRUE), tar_source)
-# tar_source()
+tar_source()
 # source("other_functions.R") # Source other scripts as needed. # nolint
 
 # Replace the target list below with your own:

@@ -6,7 +6,7 @@
 read_wdi <- function(folder) {
   wdi_files <- list.files(folder)
   
-  wdi_files <- str_subset(wdi_files, "Waste Received")
+  wdi_files <- stringr::str_subset(wdi_files, "Waste Received")
   wdi_files <- paste0(folder, wdi_files)
   
   wdi <- lapply(wdi_files, function(file_to_read) {

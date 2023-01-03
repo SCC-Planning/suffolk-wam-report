@@ -1,3 +1,4 @@
+folder <- paste0(here::here("Data"), "/")
 wdi_data <- read_wdi(folder)
 lacw_data <- read_lacw(folder)
 rlc_data <- read_rcl(folder)
