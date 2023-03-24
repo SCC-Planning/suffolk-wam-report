@@ -1,5 +1,5 @@
 ---
-title: "WIP: Suffolk Annual Waste Monitoring Report 22/23"
+title: "WIP: Suffolk Annual Waste Monitoring Report 21/22"
 author: 
     - Deborah Sacks, Sacks Consulting
     - Thomas Zwagerman, Suffolk County Council
@@ -35,7 +35,7 @@ In particular it examines whether Suffolk is net self-sufficient in the manageme
 
 # Methodology
 
-The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that has been produced by the Environment Agency is the primary data source for the report, together with other data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables). Additionally,[Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
+The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that have been produced by the Environment Agency is the primary data source for the report, together with Local Authority Collected Waste data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122). Additionally,[Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE) 
@@ -77,17 +77,17 @@ lacw_scc <- lacw |>
   dplyr::filter(`Local Authority` == "Suffolk County Council")
 
 lacw_scc_21 <- lacw_scc |>
-  dplyr::filter(`Financial Year` == "2020-21") |>
+  dplyr::filter(`Financial Year` == "2021-22") |>
   dplyr::select(`Local Authority`,`Total local authority collected waste (tonnes)`)
 
 lacw_suffolk_21 <- lacw_suffolk |>
-  dplyr::filter(`Financial Year` == "2020-21") |>
+  dplyr::filter(`Financial Year` == "2021-22") |>
   dplyr::select(`Local Authority`,`Total local authority collected waste (tonnes)`)
 ```
 
 # Waste Managed in Suffolk
 
-The total amount of Local Authority Collected Waste in Suffolk (LACW) has reduced in the year 2020-21 as shown in Figure \@ref(fig:totallocalauthority):
+The total amount of Local Authority Collected Waste in Suffolk (LACW), after a dip in 2020-21, has increased again to a similar level as before the pandemic as shown in Figure \@ref(fig:totallocalauthority):
 
 ```{r totallocalauthority,  fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "\\label{fig:totallocalauthority}Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
@@ -101,11 +101,11 @@ p1 <- sccthemes::scc_barchart(
 p1
 ```
 
-Household waste arising has also reduced over this period, as shown in Figure \@ref(fig:householdwaste)
+Household waste arising has also returned to a level similar to that before 2020-21, as shown in Figure \@ref(fig:householdwaste)
 
-This is slightly surprising in the context of the Covid 19 pandemic which required the majority of people to work from home.
+This is in line of expectation, and similar to the national picture, which saw household waste increase with the easing of lockdown in Spring 2021.
 
-However, consumption overall may have reduced as a result of lower economic activity during this period.
+Consumption overall may have reduced as a result of lower economic activity in 2020-21, and returned to previous levels as economic activity has ramped up again in 2021-22.
 
 ```{r householdwaste, fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 p2 <- sccthemes::scc_barchart(
@@ -120,7 +120,7 @@ p2
 
 ## Recycling Rates
 
-The amount of LACW sent for recycling has steadily reduced over the last five years, as shown in Figure \@ref(fig:sentforrecycling).
+The amount of LACW sent for recycling has steadily reduced between 2015-16 and 2020-21, as shown in Figure \@ref(fig:sentforrecycling). In 2021-22 however, there is again an increase in the amount of household waste set for recycling/composting/reuse. It should be noted however that it is still a smaller when compared to 2019-20, pre-pandemic.
 
 ```{r sentforrecycling, fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 p3 <- sccthemes::scc_barchart(
@@ -133,7 +133,7 @@ p3 <- sccthemes::scc_barchart(
 p3
 ```
 
-Suffolk historically had one of the highest recycling rates in England but this has reduced in all the Suffolk Districts over the past six years as shown in Table \@ref(tab:recyclingrates)
+Suffolk historically had one of the highest recycling rates in England but this has reduced in all the Suffolk Districts over the past seven years as shown in Table \@ref(tab:recyclingrates). Compared to last year, the recycling rate as a percentage has stayed constant. This indicates that, although in absolute tonnage more household waste has been sent for recycling/composting/reuse in 2021-22 \@ref(fig:sentforrecycling), this is a result the total local authority collected waste increasing and not due to an increase in the recycling rates.
 
 ```{r recyclingrates, ft.align = "center", tab.id = "recyclingrates", label = "recyclingrates", tab.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
