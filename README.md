@@ -34,7 +34,7 @@ The following data sources are needed for this report:
 
 - [Local authority collected
   waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables).
-  Usually updated in December.
+  To be published 23/03/2023.
 
 Currently the last version used for the 21/22 report:
 
