@@ -1,24 +1,15 @@
 ---
-title: "WIP: Suffolk Waste Annual Monitoring Report"
+title: "WIP: Suffolk Annual Waste Monitoring Report 22/23"
 author: 
     - Deborah Sacks, Sacks Consulting
     - Thomas Zwagerman, Suffolk County Council
-date: "`r Sys.Date()`"
 scctemplate:
+  header:
+    site_branding: "Suffolk County Council"
   navigation:
     breadcrumb_trail:
-      - text: "WORK IN PROGRESS - Suffolk Waste Annual Monitoring Report"
-output:
-  html_document:
-    template: _template.html
-    toc: true
-    toc_depth: 3
-    number_sections: true
-    fig_caption: yes
-    tab_caption: yes
-editor_options: 
-  markdown: 
-    wrap: sentence
+      - href: "index.html"
+        text: "WIP: SWAMR"
 ---
 
 \newpage
@@ -47,7 +38,7 @@ In particular it examines whether Suffolk is net self-sufficient in the manageme
 The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that has been produced by the Environment Agency is the primary data source for the report, together with other data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables). Additionally,[Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE) 
 options(scipen=999)
 ```
 
