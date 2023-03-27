@@ -21,6 +21,7 @@ editor_options:
 
 The Suffolk Minerals & Waste Local Plan was adopted in July 2020.
 The Plan contains a Vision explaining how the County will meet its statutory obligation for the supply of aggregates and the sustainable management of waste.
+
 It contains policies for determining planning application for minerals and waste development and identifies sites for future development for these uses.
 
 It is important to understand whether the policies in the Plan are being delivered as intended and the extent to which the waste arisings and movements that were forecast are correct.
@@ -34,12 +35,36 @@ Suffolk County Council also has a Development Management Local Monitoring and En
 This sets out how the Council deals with the monitoring of developments as they are delivered including site visits to ensure that planning conditions are being carried out as intended.
 
 This report looks at the effectiveness of the waste policies in delivering the policy outcomes in the Plan.
+
 In particular it examines whether Suffolk is net self-sufficient in the management of the waste arising with the Plan Area or whether additional waste management facilities are required to achieve this.
+
+## Coronavirus (COVID-19): The impact of the pandemic on local authority waste collection and services
+
+When reading this report, and especially when comparing annual totals between 2020/21 and 2021/22, the context of the pandemic should be taken into account.
+
+The COVID-19 pandemic, which commenced in March 2020, caused disruption to local authority waste collection services. Services were heavily disrupted during April to June 2020.
+
+As restrictions eased through the summer and into the autumn of 2020, local authorities and businesses acclimatised to working under lockdown conditions, and there was less disruption to services in the remainder of 2020.
+
+During 2021 lockdown restrictions were eased and despite further waves of infection there was less disruption to waste services.
+
+Wider issues, such as the state of the economy during the pandemic will also have had an effect on the amount of waste generated.
+
+A [full timeline of the UK government coronavirus lockdown](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services) is available. A more in-depth analysis of the impact of the COVID-19 pandemic on waste services is given in the [Local authority collected waste management - annual results 2021/22 report](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services) from the Department for Environment Food & Rural Affairs (DEFRA).
+
 
 # Methodology
 
-The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that have been produced by the Environment Agency is the primary data source for the report, together with Local Authority Collected Waste data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122).
-Additionally,[Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
+## Data Sources
+The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that have been produced by the Environment Agency is the primary data source for the report.
+
+The second source is Local Authority Collected Waste data Defra publish as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122). These annual results are published alongside a [national statistical report](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services).
+
+Finally, [Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
+
+## Code
+
+This report was generated in R Markdown. The source code for this report, all figures and calculations are provided in a [Github repository](https://github.com/SCC-Planning/wamreport). Full documentation is provided, and will allow other local authorities to generate their own annual waste monitoring report by adapting the code.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE) 
@@ -91,7 +116,9 @@ lacw_suffolk_21 <- lacw_suffolk |>
 
 # Waste Managed in Suffolk
 
-The total amount of Local Authority Collected Waste in Suffolk (LACW), after a dip in 2020-21, has increased again to a similar level as before the pandemic as shown in Figure \@ref(fig:totallocalauthority):
+## Local Authority Collected Waste
+
+The total amount of Local Authority Collected Waste (LACW) in Suffolk, after a reduction dip in 2020-21, has increased again to a similar level as before the pandemic as shown in Figure \@ref(fig:totallocalauthority):
 
 ```{r totallocalauthority,  fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "\\label{fig:totallocalauthority}Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
@@ -322,7 +349,7 @@ capacity |>
   flextable::theme_vanilla()
 ```
 
-In Figure \@ref(fig:landfillcapacityplot) Landfill capacity change is shown between 2019 and 2020, for sites where there is capacity.
+In Figure \@ref(fig:landfillcapacityplot) Landfill capacity change is shown between 2019 and 2021, for sites where there is capacity.
 
 ```{r landfillcapacityplot, fig.height = 6, fig.width = 8, fig.cap = "Source: [Remaining Landfill Capacity 2019, 2020 and 2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
 capacity_plot <- tidyr::pivot_longer(
