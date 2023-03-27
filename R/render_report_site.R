@@ -1,11 +1,9 @@
-library(bookdown)
-lapply(paste0(here::here("R"), "/", list.files(here::here("R"))), source)
-
-folder <- paste0(here::here("Data"), "/")
-wdi_data <- read_wdi(folder)
-lacw_data <- read_lacw(folder)
-rlc_data <- read_rcl(folder)
-
+#' Render the wamreport as a website
+#' 
+#' @param wdi_data read in WDI data 
+#' @param lacw_data read in the LACW data
+#' @param rlc_data read in the RLC data
+#' 
 render_wam_report_site <- function(wdi_data, lacw_data, rlc_data) {
   # Report parameters
   # County of interest
@@ -33,5 +31,3 @@ render_wam_report_site <- function(wdi_data, lacw_data, rlc_data) {
   
   rmarkdown::render_site()
 }
-
-render_wam_report_site(wdi_data, lacw_data, rlc_data)

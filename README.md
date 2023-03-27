@@ -1,20 +1,20 @@
 
-# suffolk-wam-report
+# Suffolk Annual Waste Monitoring Report
 
 <!-- badges: start -->
 <!-- badges: end -->
 
 The goal of suffolk-wam-report is to provide a reproducible way to
 generate the Suffolk Waste Annual Monitoring Report automatically each
-year. This report is required to be submitted to central government
-every December(?).
+year..
 
 All plots and tables have been styled to be consistent with the Suffolk
 County Council’s brand.
 
 Do note that while this is a nice template for the standard sections of
-the report. Year-on-year changes will demand some more in-depth
-investigation. For example, in 20/21 a deeper dive into sewage sludge.
+the report, year-on-year changes will demand some more in-depth
+investigation. For example, in 20/21 a deeper dive into sewage sludge and
+in 21/22 a deeper dive into waste exported to Norfolk.
 
 # Data Sources
 
@@ -29,17 +29,27 @@ The following data sources are needed for this report:
 
 - [Remaining Landfill
   Capacity](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity).
+  A new version is published around January every year.
 
 - [Local authority collected waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122).
-  To be published 23/03/2023.
+A new version is published around January/February/March each year.
 
 Currently the last version used for the 21/22 report:
 
 - WDI 2021, published October 2022.
 
-- RLC 2021, published October 2022.
+- RLC 2021, published October 2022, and updated January 2023.
 
 - LACW 2021/22, published March 2023.
 
 Note that all these sources may have updates or amendments throughout
 the year, meaning totals can change within and between years.
+
+# Content
+1. Introduction
+2. Methodology
+3. Waste Managed in Suffolk
+4. Waste Capacity
+5. Waste Movements
+6. Perfomrance of the Waste Policies and Conclusions
+7. Appendix

@@ -332,11 +332,7 @@ sccthemes::scc_barchart_grouped(
 Figure \@ref(fig:wastetolandfill) shows active Landfill sites.
 There is only one active landfill site receiving non-hazardous waste in Suffolk and this is Masons Landfill site which is operated by Valencia Waste Management.
 
-Shrublands Quarry, an inert landfill site operated by Brett Aggregates also received significant quantities of inert waste in 2019.
-
-Comment on Lawn Farm Quarry
-
-Folly Farm Waste Management 
+Other large recipients of waste to landfill are Shrublands Quarry and Lawn Farm Quarry, both of which receive significant quantities of inert waste.
 
 ```{r wastetolandfill, warning = FALSE, fig.alig = "center", fig.height = 6, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
@@ -603,7 +599,7 @@ wdi_export_table |>
 
 In past years Suffolk has largely achieved the goal of net self-sufficiency in the management of the waste arising within its area.
 
-To demonstrate this, we can calculate the net flow of waste in or out of the county.The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3).
+To demonstrate this, we can calculate the net flow of waste in or out of the county. The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3).
 
 There was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes** in 2019, and a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020.
 
@@ -611,7 +607,7 @@ In 2021 there is a net flow out of the county of **`r totals_formatting(export_t
 
 ## In-depth: Waste Water Treatment
 
-Of the tonnages sent from Suffolk to Norfolk, a large proportion comprised sludge which was sent to facilities managed by Anglian Water, as highlighted in Table \@ref(tab:tab4).
+Of the tonnages sent from Suffolk to Norfolk, a large proportion comprised sludge which was sent to facilities managed by Anglian Water, as highlighted in blue in Table \@ref(tab:tab4).
 
 ```{r suffolk_to_norfolk, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab4', label='tab4', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_norfolk <- wamreport$od_waste
@@ -691,12 +687,16 @@ This implies that there is still a shortage of waste water treatment capacity in
 
 ```{r thetford, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab5', label='tab5', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
-wdi_thetford <- wamreport$wdi_all |> 
-  dplyr::filter(
-    `Origin WPA` == "Suffolk" &
-      `Facility WPA` == "Norfolk" &
-      Operator == "EPR Thetford Limited"
-  )
+wdi_thetford <- wdi_norfolk |> 
+  dplyr::filter(Operator == "EPR Thetford Limited")
+
+od_waste <- wamreport$od_waste
+
+numeric_thetford <- od_waste |>
+  dplyr::filter(Operator == "EPR Thetford Limited" & year == 2021)
+
+numeric_all <- od_waste |> 
+  dplyr::filter(year == 2021)
 
 wdi_norfolk[1:3, ] |>
   flextable::flextable() |>
@@ -711,21 +711,27 @@ wdi_norfolk[1:3, ] |>
   flextable::theme_vanilla()
 ```
 
-One remarkable rise from in Suffolk's waste sent to Norfolk from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by EPR Thetford Limited.
+Of the waste Suffolk sends to Norfolk, one remarkable rise is in amount of waste sent to Thetford Power Station, from `r wdi_thetford$"2020"` tonnes in 2020 to `r wdi_thetford$"2021"` tonnes in 2021. Thetford Power Station is an Animal By-Products Incinerator, [which converts poultry litter into electricity](https://www.mreuk.com/thetford). It is in close proximity to the Suffolk border. 
 
-Thetford Power Station is an Animal By-Products Incinerator, [which converts poultry litter into electricity](https://www.mreuk.com/thetford). It is in close proximity to Suffolk County border.
+This destination alone counts for **`r round((numeric_thetford$tonnes/sum(numeric_all$tonnes)) * 100, 1)`%** of export to Norfolk, and alone is larger than the total net flow out of Suffolk (**`r totals_formatting(export_totals$"2021" - from_others$"2021")` tonnes**) in 2021. Without this particular waste flow Suffolk would still be a net recipient of waste. 
+
+This is a destination that should be monitored in future reports. However, due to its close proximity to the border, it is unlikely that the provision of an alternative site needs to be provided, or would indeed be viable for this waste stream, unless the tonnage grows significantly.
+
+While this site changes Suffolk from a net recipient to a net exporter of waste, and therefore technically making Suffolk not net self-sufficient, due to the factors described above no further action or policy changes is required.
+
+**TZ: There is probably a better, more formal way of describing this.**
 
 \newpage
 
 # Performance of the Waste Policies and Conclusions
 
-The outcome of the waste planning process in Suffolk has been to deliver broadly sufficient capacity of waste management facilities to manage the waste arising within the County.This includes a wide variety of treatment facilities to manage different types of materials, an energy from waste facility to manage residual waste from household, commercial and industrial sources, and sufficient landfill to dispose of the remainder.
+The outcome of the waste planning process in Suffolk has been to deliver broadly sufficient capacity of waste management facilities to manage the waste arising within the County. This includes a wide variety of treatment facilities to manage different types of materials, an energy from waste facility to manage residual waste from household, commercial and industrial sources, and sufficient landfill to dispose of the remainder.
 
-Efforts to reduce, reuse and recycle waste will continue, particularly in the context of the implementation of the Government's Resources and Waste Strategy which was published in 2018.
+Efforts to reduce, reuse and recycle waste will continue, particularly in the context of the implementation of the Government's Resources and Waste Strategy which was published in 2018. This is becoming more urgent, as Suffolk's recycling rate is falling behind England's national recycling rate.
 
 This proposes more separate collection of food waste and the separate collection of other easily recyclable materials and so consideration will need to be given to the delivery of bulking and transfer stations that may be associated with this.
 
-Consideration may need to be given to the development of additional waste water treatment capacity, given the significant movements of sludges out of the Plan Area and liaison with Anglian Water will be needed to take this forward.
+As suggested in a previous iteration of this report, consideration may need to be given to the development of additional waste water treatment capacity, given the significant movements of sludges out of the Plan Area and liaison with Anglian Water will be needed to take this forward.
 
 \newpage
 
