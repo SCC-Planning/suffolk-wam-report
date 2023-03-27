@@ -31,9 +31,7 @@ The Local Plan contains a Policy Monitoring Framework which identifies the Perfo
 Suffolk County Council also has a Development Management Local Monitoring and Enforcement Plan, adopted in 2016.
 This sets out how the Council deals with the monitoring of developments as they are delivered including site visits to ensure that planning conditions are being carried out as intended.
 
-This report looks at the effectiveness of the waste policies in delivering the policy outcomes in the Plan.
-
-In particular it examines whether Suffolk is net self-sufficient in the management of the waste arising with the Plan Area or whether additional waste management facilities are required to achieve this.
+This report looks at the effectiveness of the waste policies in delivering the policy outcomes in the Plan. In particular it examines whether Suffolk is net self-sufficient in the management of the waste arising with the Plan Area or whether additional waste management facilities are required to achieve this.
 
 ## Coronavirus (COVID-19): The impact of the pandemic on local authority waste collection and services
 
@@ -41,31 +39,28 @@ When reading this report, and especially when comparing annual totals between 20
 
 The COVID-19 pandemic, which commenced in March 2020, caused disruption to local authority waste collection services. Services were heavily disrupted during April to June 2020.
 
-As restrictions eased through the summer and into the autumn of 2020, local authorities and businesses acclimatised to working under lockdown conditions, and there was less disruption to services in the remainder of 2020.
-
-During 2021 lockdown restrictions were eased and despite further waves of infection there was less disruption to waste services.
+As restrictions eased through the summer and into the autumn of 2020, local authorities and businesses acclimatised to working under lockdown conditions, and there was less disruption to services in the remainder of 2020. During 2021 lockdown restrictions were eased and despite further waves of infection there was less disruption to waste services.
 
 Wider issues, such as the state of the economy during the pandemic will also have had an effect on the amount of waste generated.
 
-A [full timeline of the UK government coronavirus lockdown](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services) is available. A more in-depth analysis of the impact of the COVID-19 pandemic on waste services is given in the [Local authority collected waste management - annual results 2021/22 report](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services) from the Department for Environment Food & Rural Affairs (DEFRA).
+A [full timeline of the UK government coronavirus lockdown](https://www.instituteforgovernment.org.uk/sites/default/files/2022-12/timeline-coronavirus-lockdown-december-2021.pdf) is available. A more in-depth analysis of the impact of the COVID-19 pandemic on waste services is given in the [Local authority collected waste management - annual results 2021/22 report](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services) from the Department for Environment Food & Rural Affairs (DEFRA).
 
+\newpage
 
 # Methodology
 
 ## Data Sources
-The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that have been produced by the Environment Agency is the primary data source for the report.
-
-The second source is Local Authority Collected Waste data Defra publish as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122). These annual results are published alongside a [national statistical report](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services).
-
-Finally, [Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
+- The Local Authority Collected Waste annual results found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122), produced by DEFRA, for Section 3. These annual results are published alongside a [national statistical report](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services).
+- The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator), produced by the Environment Agency, for Sections 4 and 5.
+- The [Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) dataset produced by the Environment Agency for Section 4.3.
 
 ## Code
 
-This report was generated in R Markdown. The source code for this report, all figures and calculations are provided in a [Github repository](https://github.com/SCC-Planning/wamreport). Full documentation is provided, and will allow other local authorities to generate their own annual waste monitoring report by adapting the code.
+This report was generated in R Markdown. The source code for this report, all figures and calculations are provided in a [Github repository](https://github.com/SCC-Planning/wamreport). Full documentation is provided, and will allow other local authorities in England to generate their own annual waste monitoring report by adapting the code.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE) 
-options(scipen=999)
+options(scipen = 999)
 ```
 
 ```{r reading_wdi, include = FALSE}
@@ -88,11 +83,29 @@ lacw_suffolk <- lacw |>
   dplyr::filter(`Local Authority` %in% districts)
 
 # Changing names to allow aggregating of former District Councils
-lacw_suffolk$`Local Authority` <- gsub("Waveney District Council", "East Suffolk Council", lacw_suffolk$`Local Authority`)
-lacw_suffolk$`Local Authority` <- gsub("Suffolk Coastal District Council", "East Suffolk Council", lacw_suffolk$`Local Authority`)
+lacw_suffolk$`Local Authority` <- gsub(
+  "Waveney District Council",
+  "East Suffolk Council",
+  lacw_suffolk$`Local Authority`
+)
 
-lacw_suffolk$`Local Authority` <- gsub("Forest Heath District Council", "West Suffolk Council", lacw_suffolk$`Local Authority`)
-lacw_suffolk$`Local Authority` <- gsub("St Edmundsbury Borough Council", "West Suffolk Council", lacw_suffolk$`Local Authority`)
+lacw_suffolk$`Local Authority` <- gsub(
+  "Suffolk Coastal District Council",
+  "East Suffolk Council",
+  lacw_suffolk$`Local Authority`
+)
+
+lacw_suffolk$`Local Authority` <- gsub(
+  "Forest Heath District Council",
+  "West Suffolk Council",
+  lacw_suffolk$`Local Authority`
+)
+
+lacw_suffolk$`Local Authority` <- gsub(
+  "St Edmundsbury Borough Council",
+  "West Suffolk Council",
+  lacw_suffolk$`Local Authority`
+)
 
 lacw_suffolk <- lacw_suffolk |>
   dplyr::select(-Region, -`ONS Code`, -`JPP order`, -`Authority type`) |>
@@ -104,12 +117,20 @@ lacw_scc <- lacw |>
 
 lacw_scc_21 <- lacw_scc |>
   dplyr::filter(`Financial Year` == "2021-22") |>
-  dplyr::select(`Local Authority`,`Total local authority collected waste (tonnes)`)
+  dplyr::select(
+    `Local Authority`,
+    `Total local authority collected waste (tonnes)`
+  )
 
 lacw_suffolk_21 <- lacw_suffolk |>
   dplyr::filter(`Financial Year` == "2021-22") |>
-  dplyr::select(`Local Authority`,`Total local authority collected waste (tonnes)`)
+  dplyr::select(
+    `Local Authority`,
+    `Total local authority collected waste (tonnes)`
+  )
 ```
+
+\newpage
 
 # Waste Managed in Suffolk
 
@@ -146,7 +167,7 @@ p2 <- sccthemes::scc_barchart(
 p2
 ```
 
-## Recycling Rates
+## Waste sent to Recycling and Recycling Rates
 
 The amount of LACW sent for recycling has steadily reduced between 2015-16 and 2020-21, as shown in Figure \@ref(fig:sentforrecycling).
 In 2021-22 however, there is again an increase in the amount of household waste set for recycling/composting/reuse.
@@ -172,7 +193,7 @@ This indicates that, although in absolute tonnage more household waste has been 
 ```{r recyclingrates, ft.align = "center", tab.id = "recyclingrates", label = "recyclingrates", tab.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
 recycling_rates <- lacw_scc |>
-  dplyr::mutate(recycling_rates = round((`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` / `Total local authority collected waste (tonnes)`* 100), 1)) |>
+  dplyr::mutate(recycling_rates = round((`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` / `Total local authority collected waste (tonnes)` * 100), 1)) |>
   dplyr::select(`Financial Year`, recycling_rates)
 
 colnames(recycling_rates) <- c("Financial Year", "% sent for recycling")
@@ -196,7 +217,10 @@ district_plot <- lapply(unique(lacw_suffolk$`Local Authority`), function(authori
     dplyr::filter(`Local Authority` == authority)
   
   recycling_rates <- district_council |>
-    dplyr::mutate(recycling_rates = (`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` / `Total local authority collected waste (tonnes)`) * 100) |>
+    dplyr::mutate(
+      recycling_rates = (`Local authority collected waste - sent for recycling-composting-reuse (tonnes)` /
+                           `Total local authority collected waste (tonnes)`) * 100
+    ) |>
     dplyr::select(`Financial Year`, recycling_rates)
   
   colnames(recycling_rates) <- c("Financial Year", "% sent for recycling")
@@ -211,8 +235,17 @@ district_plot <- lapply(unique(lacw_suffolk$`Local Authority`), function(authori
   p4
 })
 
-do.call(gridExtra::grid.arrange, c(district_plot, ncol = 1, top = "Recycling rate by district council"))
+do.call(
+  gridExtra::grid.arrange,
+  c(
+    district_plot,
+    ncol = 1,
+    top = "Recycling rate by district council"
+  )
+)
 ```
+
+\newpage
 
 # Waste Capacity
 
@@ -267,9 +300,13 @@ wdi_totals_table |>
   flextable::bold(i = 7, j = 1:4, part = "body") |>
   flextable::theme_vanilla() |>
   flextable::footnote(i = 7, j = 1, 
-           value = flextable::as_paragraph(c("Previous reports have included figures for 'Mobile Plants' sites. EA have removed geographical descriptors for this Category, so it can no longer be reported on County level. Therefore totals may be down from previous reports.")),
-           ref_symbols = c("*"),
-           part = "body")
+                      value = flextable::as_paragraph(
+                        c(
+                          "Previous reports have included figures for 'Mobile Plants' sites. EA have removed geographical descriptors for this Category, so it can no longer be reported on County level. Therefore totals may be down from previous reports."
+                        )
+                      ),
+                      ref_symbols = c("*"),
+                      part = "body")
 ```
 
 Total waste treated in Table \@ref(tab:wastecapacity) does not include landfill.
@@ -321,8 +358,18 @@ sccthemes::scc_barchart_grouped(
   "year",
   title = "Waste Received to Landfill in Suffolk (tonnes)"
 ) +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10, angle = 45, hjust = 1)) +
-  ggplot2::scale_fill_manual(values = c("#e2eefa", "#2d6ca2", "#e8850c"))
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(
+      size = 10, 
+      angle = 45, 
+      hjust = 1)
+  ) +
+  ggplot2::scale_fill_manual(
+    values = c(
+      "#e2eefa",
+      "#2d6ca2",
+      "#e8850c")
+  )
 ```
 
 ## Remaining landfill capacity
@@ -363,16 +410,24 @@ sccthemes::scc_barchart_grouped(
   "cubic_metres",
   "year",
   title = "Remaining Landfill capacity by Facility in Suffolk (cubic metres)") +
-  ggplot2::scale_fill_manual(values = c("#e2eefa", "#2d6ca2", "#e8850c")) +
+  ggplot2::scale_fill_manual(
+    values = c(
+      "#e2eefa",
+      "#2d6ca2",
+      "#e8850c"
+    )
+  ) +
   ggplot2::theme(axis.text.x = ggplot2::element_text(size = 10, angle = 45, hjust = 1))
 ```
+
+\newpage
 
 # Waste Movements
 ## Waste Managed in Suffolk from other Waste Planning Authorities
 
 To determine whether Suffolk achieves its goal of net self-sufficiency in the management of waste arising wihin the Plan Area, we can look at the movement of waste in and out of the County.
 
-Table \@ref(tab:tab1) shows all waste managed in Suffolk, and the Waste Planning Authority (WPA) from which the waste originated. It shows the figures for all our nearest neighbours and 'All Other WPAs'.
+Table \@ref(tab:tab1) shows all waste managed in Suffolk, and the Waste Planning Authority (WPA) from which the waste originated. It shows the figures for Suffolk, all our nearest neighbours, as well as 'All Other WPAs' combined.
 
 
 ```{r waste_managed_in_suffolk, ft.align = "center", tab.id='tab1', label = 'tab1', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
@@ -399,7 +454,7 @@ wdi_origin_table <- dplyr::bind_rows(counties, other)
 
 wdi_origin_table <- wdi_origin_table |>
   tidyr::pivot_wider(names_from = `year`, values_from = `tonnes`)
-wdi_origin_table <- wdi_origin_table[(order(-wdi_origin_table$`2020`)),]
+wdi_origin_table <- wdi_origin_table[(order(-wdi_origin_table$`2020`)), ]
 
 suffolk_total <- wdi_origin_table |>
   dplyr::filter(`Origin WPA` == "Suffolk")
@@ -439,7 +494,7 @@ wdi_origin_table |>
   flextable::theme_vanilla()
 ```
 
-Table \@ref(tab:tab2) is a further breakdown of Table \@ref(tab:tab1) showing all waste sent to landfill managed in Suffolk, and the Waste Planning Authority (WPA) from which the waste originated.
+Table \@ref(tab:tab2) is a further breakdown of Table \@ref(tab:tab1) showing all waste sent to landfill in Suffolk, and the WPA from which the waste originated.
 
 ```{r waste_to_landfill2, ft.align = "center", tab.id='tab2', label='tab2', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_landfill <- wamreport$landfill_waste
@@ -458,7 +513,7 @@ wdi_landfill_table <- dplyr::bind_rows(counties_landfill, other_landfill)
 
 wdi_landfill_table <- wdi_landfill_table |>
   tidyr::pivot_wider(names_from = `year`, values_from = `tonnes`)
-wdi_landfill_table <- wdi_landfill_table[(order(-wdi_landfill_table$`2020`)),]
+wdi_landfill_table <- wdi_landfill_table[(order(-wdi_landfill_table$`2020`)), ]
 
 wdi_landfill_table[is.na(wdi_landfill_table)] <- 0
 
@@ -492,7 +547,7 @@ wdi_landfill_table |>
 
 ## Waste from Suffolk managed in other Waste Planning Authorities
 
-The total amount of waste sent **from** Suffolk to other WPAs is relatively modest as shown in Table \@ref(tab:tab3). Norfolk is by far the largest recipient of waste sent from Suffolk. This is in large part due to waste sent to Thetford Power Station, on the county border. This is explored in more detail in Table \@ref(tab:tab5)
+The total amount of waste sent **from** Suffolk to other WPAs is relatively modest as shown in Table \@ref(tab:tab3). Norfolk is by far the largest recipient of waste sent from Suffolk. This is in large part due to waste sent to Thetford Power Station, on the county border. This is explored in more detail in Table \@ref(tab:tab5).
 
 ```{r waste_from_Suffolk, ft.align = "center", tab.id='tab3', label='tab3', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_export <- wamreport$waste_destination
@@ -514,7 +569,7 @@ wdi_export_table <- dplyr::bind_rows(counties_export, other_export)
 
 wdi_export_table <- wdi_export_table |>
   tidyr::pivot_wider(names_from = `year`, values_from = `tonnes`)
-wdi_export_table <- wdi_export_table[(order(-wdi_export_table$`2021`)),]
+wdi_export_table <- wdi_export_table[(order(-wdi_export_table$`2021`)), ]
 
 wdi_export_table[is.na(wdi_export_table)] <- 0
 
@@ -546,11 +601,13 @@ wdi_export_table |>
 
 ## Net self-sufficiency
 
-Suffolk largely achieves the goal of net self-sufficiency in the management of the waste arising within its area.
-This is demonstrated by the fact that there was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes** in 2019, a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020 and a net flow out of the county of **`r totals_formatting(export_totals$"2021" - from_others$"2021")` tonnes**. This includes non-hazardous and inert wastes.
-The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3).
+In past years Suffolk has largely achieved the goal of net self-sufficiency in the management of the waste arising within its area.
 
-This is a large change in the flow of waste in Suffolk, however the reasons for this increase in 2021 net flow out of the county, are covered in Table \@ref(tab:tab5).
+To demonstrate this, we can calculate the net flow of waste in or out of the county.The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3).
+
+There was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes** in 2019, and a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020.
+
+In 2021 there is a net flow out of the county of **`r totals_formatting(export_totals$"2021" - from_others$"2021")` tonnes**. This is a large change in the flow of waste in Suffolk, however the reasons for this increase in 2021 net flow out of the county, are covered in Table \@ref(tab:tab5).
 
 ## In-depth: Waste Water Treatment
 
@@ -560,23 +617,46 @@ Of the tonnages sent from Suffolk to Norfolk, a large proportion comprised sludg
 wdi_norfolk <- wamreport$od_waste
 
 aw2019 <- wdi_norfolk |>
-  dplyr::filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2019")
+  dplyr::filter(
+    Operator %in% c(
+      "Anglian Water Services Limited",
+      "Anglian Water Services Ltd"
+    ) &
+      year == "2019"
+  )
 
 aw2019 <- sum(aw2019$tonnes)
 
 aw2020 <- wdi_norfolk |>
-  dplyr::filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2020")
+  dplyr::filter(
+    Operator %in% c(
+      "Anglian Water Services Limited",
+      "Anglian Water Services Ltd"
+    ) &
+      year == "2020"
+  )
 
 aw2020 <- sum(aw2020$tonnes)
 
 aw2021 <- wdi_norfolk |>
-  dplyr::filter(Operator %in% c("Anglian Water Services Limited", "Anglian Water Services Ltd") & year == "2021")
+  dplyr::filter(
+    Operator %in% c(
+      "Anglian Water Services Limited",
+      "Anglian Water Services Ltd"
+    ) &
+      year == "2021"
+  )
 
 aw2021 <- sum(aw2021$tonnes)
 
 wdi_norfolk$tonnes <- totals_formatting(wdi_norfolk$tonnes)
 
-wdi_norfolk <- tidyr::pivot_wider(wdi_norfolk, names_from = year, values_from = tonnes)
+wdi_norfolk <- tidyr::pivot_wider(
+  wdi_norfolk,
+  names_from = year,
+  values_from = tonnes
+)
+
 wdi_norfolk <- wdi_norfolk |> 
   dplyr::select(
     `Site Name`,
@@ -586,15 +666,17 @@ wdi_norfolk <- wdi_norfolk |>
     `2021`
   )
 
-wdi_norfolk[1:7,] |>
+wdi_norfolk[1:7, ] |>
   flextable::flextable() |>
   flextable::set_table_properties(layout = "autofit") |>
   flextable::add_header_row(
     colwidths = c(5),
-    values = c("Waste sent to Norfolk from Suffolk (tonnes), highlighting Anglian Water")
+    values = c(
+      "Waste sent to Norfolk from Suffolk (tonnes), highlighting Anglian Water"
+    )
   ) |>
   #bold(i = c(1,3,6), j = 1:4, part = "body") |>
-  flextable::bg(i = c(2,3,7), j = 1:5, part = "body", bg = "#e2eefa") |>
+  flextable::bg(i = c(2, 3, 7), j = 1:5, part = "body", bg = "#e2eefa") |>
   # color(i = c(1,3,6), j = 1:4, part = "body", color = "white") |>
   flextable::theme_vanilla()
 ```
@@ -610,24 +692,30 @@ This implies that there is still a shortage of waste water treatment capacity in
 ```{r thetford, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab5', label='tab5', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
 wdi_thetford <- wamreport$wdi_all |> 
-  dplyr::filter(`Origin WPA` == "Suffolk" & `Facility WPA` == "Norfolk" & Operator == "EPR Thetford Limited")
+  dplyr::filter(
+    `Origin WPA` == "Suffolk" &
+      `Facility WPA` == "Norfolk" &
+      Operator == "EPR Thetford Limited"
+  )
 
-wdi_norfolk[1:3,] |>
+wdi_norfolk[1:3, ] |>
   flextable::flextable() |>
   flextable::set_table_properties(layout = "autofit") |>
   flextable::add_header_row(
     colwidths = c(5),
-    values = c("Waste sent to Norfolk from Suffolk (tonnes), highlighting Thetford Power Station")
+    values = c(
+      "Waste sent to Norfolk from Suffolk (tonnes), highlighting Thetford Power Station"
+    )
   ) |>
-  #bold(i = c(1,3,6), j = 1:4, part = "body") |>
   flextable::bg(i = c(1), j = 1:5, part = "body", bg = "#e2eefa") |>
-  # color(i = c(1,3,6), j = 1:4, part = "body", color = "white") |>
   flextable::theme_vanilla()
 ```
 
 One remarkable rise from in Suffolk's waste sent to Norfolk from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by EPR Thetford Limited.
-This waste falls under SOC Category "09 - Animal and vegetable wastes" and SOC Sub Category "Slurry and manure", the waste is described as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site".
-Thetford Power Station is an Animal By-Products Incinerator, [which converts poultry litter into electricity](https://www.mreuk.com/thetford).
+
+Thetford Power Station is an Animal By-Products Incinerator, [which converts poultry litter into electricity](https://www.mreuk.com/thetford). It is in close proximity to Suffolk County border.
+
+\newpage
 
 # Performance of the Waste Policies and Conclusions
 
@@ -642,3 +730,56 @@ Consideration may need to be given to the development of additional waste water 
 \newpage
 
 # Appendix
+
+## Waste Planning applications
+Mineral and waste planning applications determined by Suffolk County Council **1st April 2021 to 31st March 2022**.
+
+```{r applications, warning = FALSE, message = FALSE}
+
+folder <- paste0(here::here("Data"), "/")
+
+applications <- readxl::read_excel(paste0(folder, "appendix_applications.xlsx"))
+
+approval_codes <- data.frame(
+  code = c(
+    "AD",
+    "APC",
+    "APP",
+    "COM"
+  ),
+  descriptions = c(
+    "Awaiting Decision",
+    "App/Conds",
+    "Approved",
+    "Comments"
+  )
+)
+
+applications <- dplyr::left_join(
+  applications,
+  approval_codes,
+  by = c("decision" = "code")) |> 
+  dplyr::select(
+    application_number,
+    location,
+    proposal,
+    notice_date,
+    decision = descriptions
+  )
+
+applications$notice_date <- as.Date(applications$notice_date)
+
+applications |>
+  flextable::flextable() |>
+  flextable::set_header_labels(
+    values = list(
+      application_number = "Application Number",
+      location = "Location",
+      proposal = "Proposal",
+      notice_date = "Notice Date",
+      decision = "Decision"
+    )
+  ) |> 
+  flextable::set_table_properties(layout = "autofit") |>
+  flextable::theme_vanilla()
+```
