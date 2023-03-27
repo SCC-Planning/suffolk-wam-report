@@ -1,3 +1,4 @@
+library(bookdown)
 lapply(paste0(here::here("R"), "/", list.files(here::here("R"))), source)
 
 folder <- paste0(here::here("Data"), "/")
@@ -32,7 +33,5 @@ render_wam_report_site <- function(wdi_data, lacw_data, rlc_data) {
   
   rmarkdown::render_site()
 }
-
-library(bookdown)
 
 render_wam_report_site(wdi_data, lacw_data, rlc_data)

@@ -1,8 +1,5 @@
 ---
 title: "WIP: Suffolk Annual Waste Monitoring Report 21/22"
-author: 
-    - Deborah Sacks, Sacks Consulting
-    - Thomas Zwagerman, Suffolk County Council
 scctemplate:
   header:
     site_branding: "Suffolk County Council"
@@ -224,7 +221,6 @@ do.call(gridExtra::grid.arrange, c(district_plot, ncol = 1, top = "Recycling rat
 The capacity of waste management infrastructure has been calculated using the throughput of the facilities in the Plan Area as recorded in the Waste Data Interrogator.
 Shown in Table \@ref(tab:wastecapacity) The amount of waste managed in all facilities in Suffolk increased from 2019 to 2020 and in particular the amount of waste managed at the Energy from Waste facility at Great Blakenham increased following the grant of planning permission to enable it to manage 295,000 tonnes per annum, an increase from the original capacity of 269,000 tonnes per annum.
 
-**TZ: In version 4 (as per 05/22) of the 2020 WDI, geographical descriptors have been removed from mobile plant permits. Suffolk totals can therefore not be calculated for 2020. For that reason I have also left 2019 out, to allow for comparison.**
 
 ```{r wastecapacity, ft.align = "center", tab.id = "wastecapacity", label = "wastecapacity", tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 # NOTE: the WDI is published in a .xlsb format, which is notoriously difficult to read.
@@ -298,7 +294,6 @@ sccthemes::scc_barchart_grouped(
 
 Figure \@ref(fig:wastetolandfill) shows active Landfill sites.
 There is only one active landfill site receiving non-hazardous waste in Suffolk and this is Masons Landfill site which is operated by Valencia Waste Management.
-**TZ: This doesn't seem relevant anymore, see Folly Farm**
 
 Shrublands Quarry, an inert landfill site operated by Brett Aggregates also received significant quantities of inert waste in 2019.
 
@@ -373,6 +368,12 @@ sccthemes::scc_barchart_grouped(
 ```
 
 # Waste Movements
+## Waste Managed in Suffolk from other Waste Planning Authorities
+
+To determine whether Suffolk achieves its goal of net self-sufficiency in the management of waste arising wihin the Plan Area, we can look at the movement of waste in and out of the County.
+
+Table \@ref(tab:tab1) shows all waste managed in Suffolk, and the Waste Planning Authority (WPA) from which the waste originated. It shows the figures for all our nearest neighbours and 'All Other WPAs'.
+
 
 ```{r waste_managed_in_suffolk, ft.align = "center", tab.id='tab1', label = 'tab1', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_origin <- wamreport$waste_origin
@@ -381,8 +382,7 @@ relevant_counties <- c(
   "Suffolk",
   "Norfolk",
   "Essex",
-  "Cambridgeshire",
-  "Peterborough"
+  "Cambridgeshire"
 )
 
 counties <- wdi_origin |>
@@ -393,7 +393,7 @@ other <- wdi_origin |>
   dplyr::group_by(year) |>
   dplyr::summarise(tonnes = sum(tonnes))
 
-other$`Origin WPA` <- "Other"
+other$`Origin WPA` <- "All Other WPAs"
 
 wdi_origin_table <- dplyr::bind_rows(counties, other)
 
@@ -434,9 +434,12 @@ wdi_origin_table |>
     colwidths = c(4),
     values = c("All waste managed in Suffolk (tonnes)")
   ) |>
-  flextable::bold(i = 7:8, j = 1:4, part = "body") |>
+  flextable::bold(i = 6:7, j = 1:4, part = "body") |>
+  flextable::italic(i = 4, j = 1, part = "body") |> 
   flextable::theme_vanilla()
 ```
+
+Table \@ref(tab:tab2) is a further breakdown of Table \@ref(tab:tab1) showing all waste sent to landfill managed in Suffolk, and the Waste Planning Authority (WPA) from which the waste originated.
 
 ```{r waste_to_landfill2, ft.align = "center", tab.id='tab2', label='tab2', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_landfill <- wamreport$landfill_waste
@@ -449,7 +452,7 @@ other_landfill <- wdi_landfill |>
   dplyr::group_by(year) |>
   dplyr::summarise(tonnes = sum(tonnes))
 
-other_landfill$`Origin WPA` <- "Other"
+other_landfill$`Origin WPA` <- "All Other WPAs"
 
 wdi_landfill_table <- dplyr::bind_rows(counties_landfill, other_landfill)
 
@@ -482,11 +485,14 @@ wdi_landfill_table |>
     values = c("Waste sent to landfill in Suffolk (tonnes)")
   ) |>
   flextable::bold(i = 6, j = 1:4, part = "body") |>
+  flextable::italic(i = 4, j = 1, part = "body") |> 
   flextable::theme_vanilla()
 
 ```
 
-The total amount of waste sent **from** Suffolk to other waste planning authority areas is relatively modest as shown in the table below:
+## Waste from Suffolk managed in other Waste Planning Authorities
+
+The total amount of waste sent **from** Suffolk to other WPAs is relatively modest as shown in Table \@ref(tab:tab3). Norfolk is by far the largest recipient of waste sent from Suffolk. This is in large part due to waste sent to Thetford Power Station, on the county border. This is explored in more detail in Table \@ref(tab:tab5)
 
 ```{r waste_from_Suffolk, ft.align = "center", tab.id='tab3', label='tab3', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 wdi_export <- wamreport$waste_destination
@@ -533,16 +539,20 @@ wdi_export_table |>
   flextable::add_header_row(
     colwidths = c(4),
     values = c("Waste sent to other authorities from Suffolk (tonnes)")
-  ) |>
-  flextable::bold(i = 6, j = 1:4, part = "body") |>
+  ) |> 
+  flextable::bold(i = 5, j = 1:4, part = "body") |>
   flextable::theme_vanilla()
 ```
 
-Suffolk largely achieves the goal of net self-sufficiency in the management of the waste arising within its area.
-This is demonstrated by the fact that there was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes** in 2019, a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020 and a net flow out of the county of **`r totals_formatting(export_totals$"2021" - from_others$"2021")` tonnes** This includes non-hazardous and inert wastes.
-The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3)
+## Net self-sufficiency
 
-## Waste Water Treatment
+Suffolk largely achieves the goal of net self-sufficiency in the management of the waste arising within its area.
+This is demonstrated by the fact that there was a net flow of waste into Suffolk of **`r totals_formatting(from_others$"2019" - export_totals$"2019")` tonnes** in 2019, a net flow into the county of **`r totals_formatting(from_others$"2020" - export_totals$"2020")` tonnes** in 2020 and a net flow out of the county of **`r totals_formatting(export_totals$"2021" - from_others$"2021")` tonnes**. This includes non-hazardous and inert wastes.
+The net flow is calculated by taking the "Total waste managed origin outwith Suffolk" in Table \@ref(tab:tab1), and subtracting the "Sent from Suffolk total" in Table \@ref(tab:tab3).
+
+This is a large change in the flow of waste in Suffolk, however the reasons for this increase in 2021 net flow out of the county, are covered in Table \@ref(tab:tab5).
+
+## In-depth: Waste Water Treatment
 
 Of the tonnages sent from Suffolk to Norfolk, a large proportion comprised sludge which was sent to facilities managed by Anglian Water, as highlighted in Table \@ref(tab:tab4).
 
@@ -595,7 +605,7 @@ In 2020, `r totals_formatting(aw2020)` tonnes of sludges were sent to these faci
 Although in 2020 the total nearly halved, the reduction 2021 has slowed.
 This implies that there is still a shortage of waste water treatment capacity in Suffolk and discussions with the Anglian Water would be useful to identify their needs to enable Suffolk to become more self-sufficient in managing this waste stream.
 
-## Thetford Power Station: poultry litter incineration
+## In-depth: Thetford Power Station
 
 ```{r thetford, warning = FALSE, message = FALSE, ft.align = "center", tab.id='tab5', label='tab5', tab.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
@@ -615,7 +625,7 @@ wdi_norfolk[1:3,] |>
   flextable::theme_vanilla()
 ```
 
-One remarkable rise from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by EPR Thetford Limited.
+One remarkable rise from in Suffolk's waste sent to Norfolk from 2020 to 2021, is the increase in tonnage sent to Thetford Power Station, operated by EPR Thetford Limited.
 This waste falls under SOC Category "09 - Animal and vegetable wastes" and SOC Sub Category "Slurry and manure", the waste is described as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site".
 Thetford Power Station is an Animal By-Products Incinerator, [which converts poultry litter into electricity](https://www.mreuk.com/thetford).
 
@@ -624,6 +634,7 @@ Thetford Power Station is an Animal By-Products Incinerator, [which converts pou
 The outcome of the waste planning process in Suffolk has been to deliver broadly sufficient capacity of waste management facilities to manage the waste arising within the County.This includes a wide variety of treatment facilities to manage different types of materials, an energy from waste facility to manage residual waste from household, commercial and industrial sources, and sufficient landfill to dispose of the remainder.
 
 Efforts to reduce, reuse and recycle waste will continue, particularly in the context of the implementation of the Government's Resources and Waste Strategy which was published in 2018.
+
 This proposes more separate collection of food waste and the separate collection of other easily recyclable materials and so consideration will need to be given to the delivery of bulking and transfer stations that may be associated with this.
 
 Consideration may need to be given to the development of additional waste water treatment capacity, given the significant movements of sludges out of the Plan Area and liaison with Anglian Water will be needed to take this forward.
