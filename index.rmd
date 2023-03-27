@@ -10,6 +10,9 @@ scctemplate:
     breadcrumb_trail:
       - href: "index.html"
         text: "WIP: SWAMR"
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 \newpage
@@ -35,7 +38,8 @@ In particular it examines whether Suffolk is net self-sufficient in the manageme
 
 # Methodology
 
-The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that have been produced by the Environment Agency is the primary data source for the report, together with Local Authority Collected Waste data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122). Additionally,[Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
+The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator) that have been produced by the Environment Agency is the primary data source for the report, together with Local Authority Collected Waste data Defra published as part of the Waste Management Statistics and information from the Waste Data Flow system, which can be found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122).
+Additionally,[Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) reported by the Environment Agency is also used.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE) 
@@ -120,7 +124,9 @@ p2
 
 ## Recycling Rates
 
-The amount of LACW sent for recycling has steadily reduced between 2015-16 and 2020-21, as shown in Figure \@ref(fig:sentforrecycling). In 2021-22 however, there is again an increase in the amount of household waste set for recycling/composting/reuse. It should be noted however that it is still a smaller when compared to 2019-20, pre-pandemic.
+The amount of LACW sent for recycling has steadily reduced between 2015-16 and 2020-21, as shown in Figure \@ref(fig:sentforrecycling).
+In 2021-22 however, there is again an increase in the amount of household waste set for recycling/composting/reuse.
+It should be noted however that it is still a smaller when compared to 2019-20, pre-pandemic.
 
 ```{r sentforrecycling, fig.alig = "center", fig.height = 4, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 p3 <- sccthemes::scc_barchart(
@@ -133,7 +139,11 @@ p3 <- sccthemes::scc_barchart(
 p3
 ```
 
-Suffolk historically had one of the highest recycling rates in England but this has reduced in all the Suffolk Districts over the past seven years as shown in Table \@ref(tab:recyclingrates). Compared to last year, the recycling rate as a percentage has stayed constant. This indicates that, although in absolute tonnage more household waste has been sent for recycling/composting/reuse in 2021-22 \@ref(fig:sentforrecycling), this is a result the total local authority collected waste increasing and not due to an increase in the recycling rates.
+Suffolk historically had one of the highest recycling rates in England but this has reduced in all the Suffolk Districts over the past seven years as shown in Table \@ref(tab:recyclingrates). It should be noted that the recycling rate in Suffolk is now lower than the official recycling rate in England as a whole (44.1%).
+
+Compared to last year, the recycling rate as a percentage has stayed constant.
+
+This indicates that, although in absolute tonnage more household waste has been sent for recycling/composting/reuse in 2021-22 \@ref(fig:sentforrecycling), this is a result the total local authority collected waste increasing and not due to an increase in the recycling rates.
 
 ```{r recyclingrates, ft.align = "center", tab.id = "recyclingrates", label = "recyclingrates", tab.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
@@ -239,35 +249,6 @@ wdi_totals_table |>
            part = "body")
 ```
 
-To view breakdown and change for specific large sites, see Figure \@ref(fig:wastebysite).
-
-```{r wastebysite, warning = FALSE, message = FALSE, fig.height = 12, fig.width = 10, fig.cap = "Five largest sites selected. Only two incineration sites. Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
-operators_ranked <- wamreport$operators_ranked
-
-plots <- lapply(unique(operators_ranked$`Site Category`), function(category) {
-  operators_plotted <- operators_ranked |>
-    dplyr::filter(`Site Category` == category) |>
-    dplyr::mutate(gap = `2021` - `2019`) |>
-    dplyr::arrange(desc(`2021`)) |>
-    head(5)
-  
-  p <-  ggplot2::ggplot(operators_plotted, ggplot2::aes(x = `2019`, xend = `2021`, y = reorder(`Site Name`, gap), group = `Site Name`)) + 
-    ggalt::geom_dumbbell(colour = "#e2eefa",
-                  size = 3,
-                  colour_x = "#2d6ca2",
-                  colour_xend = "#e8850c") +
-    sccthemes::scc_style() +
-    ggplot2::labs(title= paste0(category, " sites (tonnes)"),
-         subtitle = "Change between <span style = 'color: #2d6ca2;'>**2019**</span> and <span style = 'color: #e8850c;'>**2021**</span><br>") +
-    ggplot2::theme(
-      plot.subtitle = ggtext::element_markdown(size = 14, hjust = -.06)
-    )
-  return(p)
-})
-
-do.call(gridExtra::grid.arrange, c(plots, ncol = 1))
-```
-
 Total waste treated in Table \@ref(tab:wastecapacity) does not include landfill.
 Figure \@ref(fig:wastecapacityplot) shows Landfill alongside other categories, to give an idea of scale.
 
@@ -289,14 +270,14 @@ sccthemes::scc_barchart_grouped(
 ## Waste to Landfill
 
 Figure \@ref(fig:wastetolandfill) shows active Landfill sites.
-There is only one active landfill site receiving non-hazardous waste in Suffolk and this is Masons Landfill site which is operated by Viridor.
+There is only one active landfill site receiving non-hazardous waste in Suffolk and this is Masons Landfill site which is operated by Valencia Waste Management.
 **TZ: This doesn't seem relevant anymore, see Folly Farm**
 
-Worlington Quarry operated by Frimstone received significant amounts of soil deposits in 2020, but does not have a permit for the land filling of non-hazardous waste.
-Its Permit is category A25 : Deposit of waste to land as a recovery operation.
-**TZ: Not included as a landfill site in WDI**
-
 Shrublands Quarry, an inert landfill site operated by Brett Aggregates also received significant quantities of inert waste in 2019.
+
+Comment on Lawn Farm Quarry
+
+Folly Farm Waste Management 
 
 ```{r wastetolandfill, warning = FALSE, fig.alig = "center", fig.height = 6, fig.width = 8, fig.cap = "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
 
@@ -329,11 +310,7 @@ Operators can claim commercial confidentiality.
 See Table \@ref(tab:tablc)
 
 ```{r tablc, message = FALSE, warning = FALSE, ft.align = "center", tab.id='tablc', label = 'tablc', tab.cap = "Source: [Remaining Landfill Capacity 2019, 2020 and 2021.](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity)"}
-capacity <- tidyr::pivot_wider(
-  wamreport$rlc,
-  names_from = year,
-  values_from = `Remaining Capacity (cubic metres)`
-)
+capacity <- wamreport$rlc_capacity
 
 capacity |>
   flextable::flextable() |>

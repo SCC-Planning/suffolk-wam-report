@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # suffolk-wam-report
 
 <!-- badges: start -->
@@ -32,8 +30,7 @@ The following data sources are needed for this report:
 - [Remaining Landfill
   Capacity](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity).
 
-- [Local authority collected
-  waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables).
+- [Local authority collected waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122).
   To be published 23/03/2023.
 
 Currently the last version used for the 21/22 report:
@@ -42,7 +39,7 @@ Currently the last version used for the 21/22 report:
 
 - RLC 2021, published October 2022.
 
-- LACW 2020/21, published January 2022.
+- LACW 2021/22, published March 2023.
 
 Note that all these sources may have updates or amendments throughout
 the year, meaning totals can change within and between years.

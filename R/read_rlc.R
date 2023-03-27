@@ -12,11 +12,12 @@ read_rcl <- function(folder) {
   rlc <- lapply(rlc_files, function(file_to_read) {
     capacity <- readxl::read_excel(file_to_read, skip = 7)
     # Select column by number because names vary by year
-    capacity <- capacity[, c(2, 3, 9, 10)]
+    capacity <- capacity[, c(2, 3, 7, 9, 10)]
     
     colnames(capacity) <- c(
       "Operator",
       "Facility",
+      "Local Authority",
       "Site Type",
       "Remaining Capacity (cubic metres)"
     )

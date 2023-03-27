@@ -26,7 +26,8 @@ render_wam_report_site <- function(wdi_data, lacw_data, rlc_data) {
     landfill_waste = get_landfill_waste(wdi_data, county),
     od_waste = get_waste_between_wpas(wdi_data, origin, destination),
     waste_origin = get_waste_origin(wdi_data, county),
-    waste_destination = get_waste_destination(wdi_data, county)
+    waste_destination = get_waste_destination(wdi_data, county),
+    rlc_capacity = get_rlc_capacity(rlc_data, county)
   )
   
   rmarkdown::render_site()
