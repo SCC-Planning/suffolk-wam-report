@@ -186,9 +186,7 @@ p3
 
 Suffolk historically had one of the highest recycling rates in England but this has reduced in all the Suffolk Districts over the past seven years as shown in Table \@ref(tab:recyclingrates). It should be noted that the recycling rate in Suffolk is now lower than the official recycling rate in England as a whole (44.1%).
 
-Compared to last year, the recycling rate as a percentage has stayed constant.
-
-This indicates that, although in absolute tonnage more household waste has been sent for recycling/composting/reuse in 2021-22 \@ref(fig:sentforrecycling), this is a result the total local authority collected waste increasing and not due to an increase in the recycling rates.
+Compared to last year, the recycling rate as a percentage has stayed constant. This indicates that, although in absolute tonnage more household waste has been sent for recycling/composting/reuse in 2021-22, as shown in Table \@ref(fig:sentforrecycling), this is a result the total local authority collected waste increasing and not due to an increase in the recycling rates.
 
 ```{r recyclingrates, ft.align = "center", tab.id = "recyclingrates", label = "recyclingrates", tab.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
 
@@ -208,7 +206,7 @@ The LACW recycling rate is shown in Figure \@ref(fig:districtrecyclingratedistri
 These have been subject to some reorganisaition in recent years and so the graphs below show the rates for the combines councils before each merger and the current district.
 It is possible that the process of re-organisation has disrupted services to some extent.
 
-From 2019 - 20 Suffolk Coastal District Council and Waveney District Council merge to become East Suffolk Council, and Forest Heath District Council and St Edmundsbury Borough Council merged to become "West Suffolk Council".
+From 2019 - 20, Suffolk Coastal District Council and Waveney District Council merge to become East Suffolk Council, and Forest Heath District Council and St Edmundsbury Borough Council merged to become West Suffolk Council.
 Their figures have been aggregated in their respective Councils.
 
 ```{r districtrecyclingratedistricts, message = FALSE, fig.alig = "center", fig.height = 8, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}

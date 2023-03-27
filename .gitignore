@@ -53,3 +53,4 @@ rsconnect/
 /_targets
 *.docx
 docs/Data/appendix_applications.xlsx
+*.pdf
