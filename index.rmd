@@ -51,6 +51,7 @@ A [full timeline of the UK government coronavirus lockdown](https://www.institut
 
 ## Data Sources
 - The Local Authority Collected Waste annual results found under [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122), produced by DEFRA, for Section 3. These annual results are published alongside a [national statistical report](https://www.gov.uk/government/statistics/local-authority-collected-waste-management-annual-results-202122/local-authority-collected-waste-management-annual-results-202122#coronavirus-covid-19-the-impact-of-the-pandemic-on-local-authority-waste-collection-and-services).
+- The [WasteDataFlow - Local Authority waste management](https://www.data.gov.uk/dataset/0e0c12d8-24f6-461f-b4bc-f6d6a5bf2de5/wastedataflow-local-authority-waste-management) dataset, covering collection and recycling of waste based on a quarterly survey from local authorities, for section 3.3.
 - The [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator), produced by the Environment Agency, for Sections 4 and 5.
 - The [Remaining Landfill Capacity 2019-2021](https://www.data.gov.uk/dataset/237825cb-dc10-4c53-8446-1bcd35614c12/remaining-landfill-capacity) dataset produced by the Environment Agency for Section 4.3.
 
@@ -305,7 +306,7 @@ Although food waste is not collected in Suffolk, there are `r nrow(combined)` au
 
 To get an impression of the performance of neighbouring authorities, Table \@ref(tab:foodwastenearby) provides a summary of some of the neighbouring authorities that already collect food waste separately, and their food waste collection rates.
 
-```{r foodwastenearby, message = FALSE, ft.align = "center", tab.id = "foodwastenearby", label = "foodwastenearby", tab.cap = "source tbd"}
+```{r foodwastenearby, message = FALSE, ft.align = "center", tab.id = "foodwastenearby", label = "foodwastenearby", tab.cap = "Source: [WasteDataFlow - Local Authority waste management](https://www.data.gov.uk/dataset/0e0c12d8-24f6-461f-b4bc-f6d6a5bf2de5/wastedataflow-local-authority-waste-management)"}
 nearby_councils <- c(
   "Cambridge City and South Cambs Councils",
   "Colchester Borough Council",
@@ -340,7 +341,7 @@ nearby |>
 
 A table of all authorities is provided in the appendix. We can summarise the national picture using summary statistics, which are provided here in Table \@ref(tab:foodwastesummary).
 
-```{r foodwastesummary, message = FALSE, ft.align = "center", tab.id = "foodwastesummary", label = "foodwastesummary", tab.cap = "source tbd"}
+```{r foodwastesummary, message = FALSE, ft.align = "center", tab.id = "foodwastesummary", label = "foodwastesummary", tab.cap = "Source: [WasteDataFlow - Local Authority waste management](https://www.data.gov.uk/dataset/0e0c12d8-24f6-461f-b4bc-f6d6a5bf2de5/wastedataflow-local-authority-waste-management)"}
 fw_summary <- data.frame(unclass(summary(combined$pct_total)), check.names = FALSE, stringsAsFactors = FALSE)
 
 fw_summary <- tibble::rownames_to_column(fw_summary, "summary_stat")
@@ -367,9 +368,9 @@ The mean recycling rate of food waste across all authorities that collect it is 
 
 An exact number cannot be predicted. Therefore, using the summary statistics in Table \@ref(tab:foodwastesummary), we can estimate a likely range of food waste tonnage that might arise when food waste is collected separately.
 
-By multiplying the total household waste collected, by the national food waste collection rates above, an estimated range is given in Figure \@ref(fig:foodwastepredicted).
+By multiplying the total household waste collected in each of the districts, by the national food waste collection rates above, an estimated range is given in Figure \@ref(fig:foodwastepredicted).
 
-```{r foodwastepredicted, fig.height = 4, fig.width = 8, fig.cap = "cap tbd"}
+```{r foodwastepredicted, fig.height = 4, fig.width = 8, fig.cap = "Source: [WasteDataFlow - Local Authority waste management](https://www.data.gov.uk/dataset/0e0c12d8-24f6-461f-b4bc-f6d6a5bf2de5/wastedataflow-local-authority-waste-management)"}
 suffolk_fw <- lacw_suffolk |> 
   dplyr::filter(`Financial Year` == "2021-22") |> 
   dplyr::select(authority = `Local Authority`, household_total_waste_tonnes = `Household - total waste (tonnes)`)
@@ -409,9 +410,9 @@ ggplot2::ggplot(
     axis.title.x = element_text()
   )
 ```
-The totals displayed in Figure \@ref(fig:foodwastepredicted) are stated in Table \@ref(tab:foodwasteestimate). This shows the estimated tonnage of food waste, where the lowest estimate is equivalent to the lowest food waste collection rate in the county, low is equivalent to the 1st quartile in the country etc.
+The totals displayed in Figure \@ref(fig:foodwastepredicted) are stated in Table \@ref(tab:foodwasteestimate). This shows the estimated tonnage of food waste, where the lowest estimate is equivalent to the lowest food waste collection rate in England, low is equivalent to the 1st quartile in the England etc.
 
-```{r foodwasteestimate, message = FALSE, ft.align = "center", tab.id = "foodwasteestimate", label = "foodwasteestimate", tab.cap = "source tbd"}
+```{r foodwasteestimate, message = FALSE, ft.align = "center", tab.id = "foodwasteestimate", label = "foodwasteestimate", tab.cap = "Source: [WasteDataFlow - Local Authority waste management](https://www.data.gov.uk/dataset/0e0c12d8-24f6-461f-b4bc-f6d6a5bf2de5/wastedataflow-local-authority-waste-management)"}
 suffolk_rates <- suffolk_fw |> 
   dplyr::select(-household_total_waste_tonnes, -mean) 
 
@@ -454,11 +455,11 @@ suffolk_rates |>
   flextable::theme_vanilla() 
 ```
 
-It is therefore estimated that Suffolk will need at the very least a capacity of `r totals_formatting(round(suffolk_rates$qua_1st[suffolk_rates$authority == "Suffolk Total"], 0))` t, but to decrease the likelihood the food waste stream does not exceed capacity, a capacity between `r totals_formatting(round(suffolk_rates$median[suffolk_rates$authority == "Suffolk Total"], 0))` t - `r totals_formatting(round(suffolk_rates$qua_3rd[suffolk_rates$authority == "Suffolk Total"], 0))` t would be more desirable. Any applications that would take capacity over `r totals_formatting(round(suffolk_rates$max[suffolk_rates$authority == "Suffolk Total"], 0))` t, would need to provide a robust evidence base that there is a requirement for that capacity, as this is equivalent to the highest food waste collection rate in England as of 2021-22.
+It is therefore estimated that Suffolk will need at the very least a capacity of **`r totals_formatting(round(suffolk_rates$qua_1st[suffolk_rates$authority == "Suffolk Total"], 0))` t**, but to decrease the likelihood the food waste stream does not exceed capacity, a capacity between **`r totals_formatting(round(suffolk_rates$median[suffolk_rates$authority == "Suffolk Total"], 0))` t - `r totals_formatting(round(suffolk_rates$qua_3rd[suffolk_rates$authority == "Suffolk Total"], 0))` t** would be more desirable. Any applications that would take capacity over **`r totals_formatting(round(suffolk_rates$max[suffolk_rates$authority == "Suffolk Total"], 0))` t**, would need to provide a robust evidence base that there is a requirement for that capacity, as this is equivalent to the highest food waste collection rate in England as of 2021-22.
 
 To provide this capacity for recycling food waste, a likely destination will be anaerobic digestion plants. The Anaerobic Digestion and Bioresources Association (ADBA) have published a report outlining how local authorities can comply with changes in the law. ADBA's report can be found [here](https://adbioresources.org/food-waste-recycling-and-ad/).
 
-Suffolk's current AD treatment waste received will be covered in Section 4
+Some AD capacity may already exist. AD plants receive a range of waste streams, and not all AD plants will be able to take household food waste. Any existing AD capacity, may therefore not equal to "free" capacity for food waste, and the additional capacity stated above may still be required as an addition. Suffolk's current composition and volume of AD treatment waste received will be covered in Section 4.
 
 \newpage
 

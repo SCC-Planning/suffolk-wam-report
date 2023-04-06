@@ -1,4 +1,5 @@
 library(bookdown)
+library(ggplot2)
 lapply(paste0(here::here("R"), "/", list.files(here::here("R"))), source)
 
 folder <- paste0(here::here("Data"), "/")

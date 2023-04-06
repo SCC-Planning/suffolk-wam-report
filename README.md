@@ -34,6 +34,9 @@ The following data sources are needed for this report:
 - [Local authority collected waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables-202122).
 A new version is published around January/February/March each year.
 
+- - The [WasteDataFlow - Local Authority waste management](https://www.data.gov.uk/dataset/0e0c12d8-24f6-461f-b4bc-f6d6a5bf2de5/wastedataflow-local-authority-waste-management). A new version is published quarterly
+
+
 Currently the last version used for the 21/22 report:
 
 - WDI 2021, published October 2022.
@@ -41,6 +44,8 @@ Currently the last version used for the 21/22 report:
 - RLC 2021, published October 2022, and updated January 2023.
 
 - LACW 2021/22, published March 2023.
+
+- WasteDataFlow 2021/22, published March 2023.
 
 Note that all these sources may have updates or amendments throughout
 the year, meaning totals can change within and between years.
