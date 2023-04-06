@@ -243,6 +243,223 @@ do.call(
 )
 ```
 
+## Case Study: Food Waste Collection
+
+Currently no food waste is collected separately in Suffolk. However, as part of the Environment Act 2021 authorities will be expected to collect food waste separately at least once a week. Authorities which do not have an existing food waste collection contract in place, will be expected to make arrangements by the 2024/25 financial year at the latest.
+
+```{r foodwaste, message = FALSE}
+folder <- paste0(here::here("Data"), "/")
+
+food_waste <- read.csv(
+  paste0(
+    folder,
+    "Waste_collection_and_recycling_England_data_2021-22.csv"
+  ), skip = 1
+) |> 
+  janitor::clean_names() |> 
+  dplyr::filter(
+    row_text == "Waste food only" &
+      col_text == "Tonnage collected for recycling"
+  ) |> 
+  dplyr::select(
+    authority,
+    data
+  )
+
+food_waste$data <- as.numeric(food_waste$data)
+food_waste <- food_waste |> 
+  dplyr::group_by(authority) |> 
+  dplyr::summarise(food_waste = sum(data))
+
+all_lacw <- read_lacw(folder) |> 
+  janitor::clean_names()
+
+selected_lacw <- all_lacw |> 
+  dplyr::filter(
+    local_authority %in% food_waste$authority &
+      financial_year == "2021-22"
+  ) |> 
+  dplyr::select(
+    local_authority,
+    household_total_waste_tonnes
+  )
+
+combined <- dplyr::left_join(
+  food_waste,
+  selected_lacw,
+  by = c(
+    "authority" = "local_authority"
+  )
+)
+
+combined <- combined |> 
+  dplyr::mutate(pct_total = (food_waste / household_total_waste_tonnes))
+
+combined[is.na(combined)] <- 0
+
+combined <- combined |> 
+  dplyr::filter(food_waste > 10 & household_total_waste_tonnes > 0)
+```
+
+Although food waste is not collected in Suffolk, there are `r nrow(combined)` authorities in England that already collect food waste separately. To try and estimate how much food waste we might expect to arise, we can look at how much food waste is collected as a percentage of the total waste collected by these authorities.
+
+To get an impression of the performance of neighbouring authorities, Table \@ref(tab:foodwastenearby) provides a summary of some of the neighbouring authorities that already collect food waste separately, and their food waste collection rates.
+
+```{r foodwastenearby, message = FALSE, ft.align = "center", tab.id = "foodwastenearby", label = "foodwastenearby", tab.cap = "source tbd"}
+nearby_councils <- c(
+  "Cambridge City and South Cambs Councils",
+  "Colchester Borough Council",
+  "Kings Lynn and West Norfolk Borough Council",
+  "Maldon District Council",
+  "Norwich City Council",
+  "Peterborough City Council",
+  "Tendring District Council"
+)
+
+nearby <- combined |> 
+  dplyr::filter(authority %in% nearby_councils)
+
+nearby |> 
+  flextable::flextable() |> 
+  flextable::set_table_properties(layout = "autofit") |>
+  flextable::add_header_row(
+    colwidths = c(4),
+    values = c("Food Waste Collection Rates in selected authorities near Suffolk, 2021-22")
+  ) |>
+  flextable::set_formatter(
+    pct_total = function(x) sprintf( "%.2f%%", x*100 ) 
+  ) |> 
+  flextable::set_header_labels(
+    authority = "Authority",
+    food_waste = "Food Waste Collected (in t)",
+    household_total_waste_tonnes = "Total Household Waste Collected (in t)",
+    pct_total = "% Food Waste of Total Collected"
+  ) |> 
+  flextable::theme_vanilla() 
+```
+
+A table of all authorities is provided in the appendix. We can summarise the national picture using summary statistics, which are provided here in Table \@ref(tab:foodwastesummary).
+
+```{r foodwastesummary, message = FALSE, ft.align = "center", tab.id = "foodwastesummary", label = "foodwastesummary", tab.cap = "source tbd"}
+fw_summary <- data.frame(unclass(summary(combined$pct_total)), check.names = FALSE, stringsAsFactors = FALSE)
+
+fw_summary <- tibble::rownames_to_column(fw_summary, "summary_stat")
+colnames(fw_summary) <- c("summary_stat", "pct")
+
+fw_summary |>
+  flextable::flextable() |>
+  flextable::set_table_properties(layout = "autofit") |>
+  flextable::add_header_row(
+    colwidths = c(2),
+    values = c("Statistics for Food Waste as a percentage of total household waste collected, England 2021-22")
+  ) |>
+  flextable::set_formatter(
+    pct = function(x) sprintf( "%.2f%%", x*100 ) 
+  ) |> 
+  flextable::set_header_labels(
+    summary_stat = "Summary Statistic",
+    pct = "Food waste collection rate"
+  ) |> 
+  flextable::theme_vanilla() 
+```
+
+The mean recycling rate of food waste across all authorities that collect it is **`r round(fw_summary$pct[fw_summary$summary_stat == "Mean"], 4) * 100`%**, with a minimum rate of **`r round(fw_summary$pct[fw_summary$summary_stat == "Min."], 4) * 100`%** and a maximum rate of **`r round(fw_summary$pct[fw_summary$summary_stat == "Max."], 4) * 100`%**. The 1st quartile and 3rd quartile indicate that, in simple terms, the rate for most authorities lies between **`r round(fw_summary$pct[fw_summary$summary_stat == "1st Qu."], 4) * 100` - `r round(fw_summary$pct[fw_summary$summary_stat == "3rd Qu."], 4) * 100` %**.
+
+An exact number cannot be predicted. Therefore, using the summary statistics in Table \@ref(tab:foodwastesummary), we can estimate a likely range of food waste tonnage that might arise when food waste is collected separately.
+
+By multiplying the total household waste collected, by the national food waste collection rates above, an estimated range is given in Figure \@ref(fig:foodwastepredicted).
+
+```{r foodwastepredicted, fig.height = 4, fig.width = 8, fig.cap = "cap tbd"}
+suffolk_fw <- lacw_suffolk |> 
+  dplyr::filter(`Financial Year` == "2021-22") |> 
+  dplyr::select(authority = `Local Authority`, household_total_waste_tonnes = `Household - total waste (tonnes)`)
+
+
+suffolk_fw$min <- suffolk_fw$household_total_waste_tonnes * fw_summary$pct[fw_summary$summary_stat == "Min."]
+suffolk_fw$qua_1st <- suffolk_fw$household_total_waste_tonnes * fw_summary$pct[fw_summary$summary_stat == "1st Qu."]
+suffolk_fw$median <- suffolk_fw$household_total_waste_tonnes * fw_summary$pct[fw_summary$summary_stat == "Median"]
+suffolk_fw$mean <- suffolk_fw$household_total_waste_tonnes * fw_summary$pct[fw_summary$summary_stat == "Mean"]
+suffolk_fw$qua_3rd <- suffolk_fw$household_total_waste_tonnes * fw_summary$pct[fw_summary$summary_stat == "3rd Qu."]
+suffolk_fw$max <- suffolk_fw$household_total_waste_tonnes * fw_summary$pct[fw_summary$summary_stat == "Max."]
+
+ggplot2::ggplot(
+  suffolk_fw,
+  ggplot2::aes(
+    x = as.factor(authority),
+    ymin = min,
+    lower = qua_1st, 
+    middle = median,
+    upper = qua_3rd, 
+    ymax = max,
+    fill = as.factor(authority)
+  )
+) +
+  ggplot2::geom_boxplot(
+    stat = "identity"
+  )  +
+  ggplot2::scale_fill_viridis_d() +
+  ggplot2::labs(
+    title = "Estimated Food Waste arising from Households in Suffolk",
+    subtitle = "for each District/Borough, generated using national food waste collection rates."
+  ) +
+  coord_flip() +
+  sccthemes::scc_style()+
+  ylab("Estimated Food Waste (in t)") +
+  theme(
+    axis.title.x = element_text()
+  )
+```
+The totals displayed in Figure \@ref(fig:foodwastepredicted) are stated in Table \@ref(tab:foodwasteestimate). This shows the estimated tonnage of food waste, where the lowest estimate is equivalent to the lowest food waste collection rate in the county, low is equivalent to the 1st quartile in the country etc.
+
+```{r foodwasteestimate, message = FALSE, ft.align = "center", tab.id = "foodwasteestimate", label = "foodwasteestimate", tab.cap = "source tbd"}
+suffolk_rates <- suffolk_fw |> 
+  dplyr::select(-household_total_waste_tonnes, -mean) 
+
+estimate_totals <- data.frame(
+  authority = c("Suffolk Total"),
+  min = sum(suffolk_rates$min),
+  qua_1st = sum(suffolk_rates$qua_1st),
+  median = sum(suffolk_rates$median),
+  qua_3rd = sum(suffolk_rates$qua_3rd),
+  max = sum(suffolk_rates$max)
+)
+
+suffolk_rates <- dplyr::bind_rows(suffolk_rates, estimate_totals)
+
+suffolk_rates |> 
+  flextable::flextable() |> 
+  flextable::set_table_properties(layout = "autofit") |>
+  flextable::add_header_row(
+    colwidths = c(6),
+    values = c("Estimated Food Waste arising from Households in Suffolk, England 2021-22 (tonnes)")
+  ) |>
+  flextable::colformat_double(
+    j = c(
+      "min", 
+      "qua_1st",
+      "median",
+      "qua_3rd",
+      "max"),
+    digits = 0
+    ) |> 
+  flextable::set_header_labels(
+    authority = "Authority",
+    min = "Lowest Estimate",
+    qua_1st = "Low Estimate",
+    median = "Median Estimate",
+    qua_3rd = "High Estimate",
+    max = "Highest Estimate"
+  ) |> 
+  flextable::bold(i = 5, j = 1:6, part = "body") |>
+  flextable::theme_vanilla() 
+```
+
+It is therefore estimated that Suffolk will need at the very least a capacity of `r totals_formatting(round(suffolk_rates$qua_1st[suffolk_rates$authority == "Suffolk Total"], 0))` t, but to decrease the likelihood the food waste stream does not exceed capacity, a capacity between `r totals_formatting(round(suffolk_rates$median[suffolk_rates$authority == "Suffolk Total"], 0))` t - `r totals_formatting(round(suffolk_rates$qua_3rd[suffolk_rates$authority == "Suffolk Total"], 0))` t would be more desirable. Any applications that would take capacity over `r totals_formatting(round(suffolk_rates$max[suffolk_rates$authority == "Suffolk Total"], 0))` t, would need to provide a robust evidence base that there is a requirement for that capacity, as this is equivalent to the highest food waste collection rate in England as of 2021-22.
+
+To provide this capacity for recycling food waste, a likely destination will be anaerobic digestion plants. The Anaerobic Digestion and Bioresources Association (ADBA) have published a report outlining how local authorities can comply with changes in the law. ADBA's report can be found [here](https://adbioresources.org/food-waste-recycling-and-ad/).
+
+Suffolk's current AD treatment waste received will be covered in Section 4
+
 \newpage
 
 # Waste Capacity
