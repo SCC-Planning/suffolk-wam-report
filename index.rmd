@@ -561,16 +561,21 @@ ad_summary <- wdi_data |>
     tonnes = sum(`Tonnes Received`)
   )
 
+ad_2021 <- ad_summary |> 
+  dplyr::filter(year == 2021)
+
 ad_summary_yearly <- tidyr::pivot_wider(
   ad_summary,
   names_from = year,
   values_from = tonnes
 )
 
+ad_summary_yearly <- ad_summary_yearly |> 
+  dplyr::mutate_all(~replace(., is.na(.), 0))
+
 ad_summary_yearly$`2019` <- totals_formatting(ad_summary_yearly$`2019`)
 ad_summary_yearly$`2020` <- totals_formatting(ad_summary_yearly$`2020`)
 ad_summary_yearly$`2021` <- totals_formatting(ad_summary_yearly$`2021`)
-
 
 ad_summary_yearly |>
   flextable::flextable() |>
@@ -582,7 +587,7 @@ ad_summary_yearly |>
   flextable::theme_vanilla()
 ```
 
-The tonnage of waste treated in 2021, totals `r sum(ad_summary_yearly$year_2021)` t. All waste treated here is classed as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site". These sites are therefore will not accept municipa
+The tonnage of waste treated in 2021, totals `r totals_formatting(sum(ad_summary$tonnes))` t. All waste treated here is classed as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site". These sites are therefore will not accept municipa
 
 ## Waste to Landfill
 
