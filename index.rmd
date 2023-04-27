@@ -151,7 +151,7 @@ p1 <- sccthemes::scc_barchart(
 p1
 ```
 
-Household waste arising has also returned to a level similar to that before 2020-21, as shown in Figure \@ref(fig:householdwaste)
+Household waste arising has also returned to a level similar to that before 2020-21, as shown in Figure \@ref(fig:householdwaste).
 
 This is in line of expectation, and similar to the national picture, which saw household waste increase with the easing of lockdown in Spring 2021.
 
@@ -542,6 +542,47 @@ sccthemes::scc_barchart_grouped(
   ggplot2::scale_fill_manual(values = c("#e2eefa", "#2d6ca2", "#e8850c"))
 
 ```
+
+### Waste to Anaerobic Landfill
+Following on from the Case Study: Food Waste Collection, current anaerobic digestion treatment in Suffolk is presented in Table \@ref(tab:tabad).
+
+```{r waste_to_anaerobic, warning = FALSE, ft.align = "center", tab.id='tabad', label = 'tabad', tab.cap =  "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
+ad_summary <- wdi_data |> 
+  dplyr::filter(
+    `Facility Type`
+    %in%
+      c("Anaerobic digestion", "Anaerobic Digestion") &
+      `Facility WPA` == "Suffolk") |> 
+  dplyr::group_by(
+    `Site Name`,
+    `EWC Waste Desc`,
+    `year`
+  ) |> 
+  dplyr::summarise(
+    tonnes = sum(`Tonnes Received`)
+  )
+
+ad_summary$`EWC Waste Desc`
+
+ad_summary_yearly <- tidyr::pivot_wider(
+  ad_summary,
+  names_from = year,
+  values_from = tonnes,
+  names_prefix = "year_"
+)
+
+
+ad_summary_yearly |>
+  flextable::flextable() |>
+  flextable::set_table_properties(layout = "autofit") |>
+  flextable::add_header_row(
+    colwidths = c(5),
+    values = c("Waste treated in anaerobic digestion plants in Suffolk in 2019, 2020 and 2021 (tonnes)")
+  ) |>
+  flextable::theme_vanilla()
+```
+
+The tonnage of waste treated in 2021, totals `r sum(ad_summary_yearly$year_2021)` t. All waste treated here is classed as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site". These sites are therefore will not accept municipa
 
 ## Waste to Landfill
 
