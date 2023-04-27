@@ -555,28 +555,28 @@ ad_summary <- wdi_data |>
       `Facility WPA` == "Suffolk") |> 
   dplyr::group_by(
     `Site Name`,
-    `EWC Waste Desc`,
     `year`
   ) |> 
   dplyr::summarise(
     tonnes = sum(`Tonnes Received`)
   )
 
-ad_summary$`EWC Waste Desc`
-
 ad_summary_yearly <- tidyr::pivot_wider(
   ad_summary,
   names_from = year,
-  values_from = tonnes,
-  names_prefix = "year_"
+  values_from = tonnes
 )
+
+ad_summary_yearly$`2019` <- totals_formatting(ad_summary_yearly$`2019`)
+ad_summary_yearly$`2020` <- totals_formatting(ad_summary_yearly$`2020`)
+ad_summary_yearly$`2021` <- totals_formatting(ad_summary_yearly$`2021`)
 
 
 ad_summary_yearly |>
   flextable::flextable() |>
   flextable::set_table_properties(layout = "autofit") |>
   flextable::add_header_row(
-    colwidths = c(5),
+    colwidths = c(4),
     values = c("Waste treated in anaerobic digestion plants in Suffolk in 2019, 2020 and 2021 (tonnes)")
   ) |>
   flextable::theme_vanilla()
