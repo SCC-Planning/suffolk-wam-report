@@ -207,7 +207,7 @@ The LACW recycling rate is shown in Figure \@ref(fig:districtrecyclingratedistri
 These have been subject to some reorganisaition in recent years and so the graphs below show the rates for the combines councils before each merger and the current district.
 It is possible that the process of re-organisation has disrupted services to some extent.
 
-From 2019 - 20, Suffolk Coastal District Council and Waveney District Council merge to become East Suffolk Council, and Forest Heath District Council and St Edmundsbury Borough Council merged to become West Suffolk Council.
+From 2019 - 20, Suffolk Coastal District Council and Waveney District Council merged to become East Suffolk Council, and Forest Heath District Council and St Edmundsbury Borough Council merged to become West Suffolk Council.
 Their figures have been aggregated in their respective Councils.
 
 ```{r districtrecyclingratedistricts, message = FALSE, fig.alig = "center", fig.height = 8, fig.width = 8, fig.cap = "Source: [ENV18 - Local Authority Collected Waste](https://www.gov.uk/government/statistical-data-sets/env18-local-authority-collected-waste-annual-results-tables)"}
@@ -339,7 +339,7 @@ nearby |>
   flextable::theme_vanilla() 
 ```
 
-A table of all authorities is provided in the appendix. We can summarise the national picture using summary statistics, which are provided here in Table \@ref(tab:foodwastesummary).
+The national picture is showin in summary statistics, which are provided here in Table \@ref(tab:foodwastesummary).
 
 ```{r foodwastesummary, message = FALSE, ft.align = "center", tab.id = "foodwastesummary", label = "foodwastesummary", tab.cap = "Source: [WasteDataFlow - Local Authority waste management](https://www.data.gov.uk/dataset/0e0c12d8-24f6-461f-b4bc-f6d6a5bf2de5/wastedataflow-local-authority-waste-management)"}
 fw_summary <- data.frame(unclass(summary(combined$pct_total)), check.names = FALSE, stringsAsFactors = FALSE)
@@ -459,7 +459,7 @@ It is therefore estimated that Suffolk will need at the very least a capacity of
 
 To provide this capacity for recycling food waste, a likely destination will be anaerobic digestion plants. The Anaerobic Digestion and Bioresources Association (ADBA) have published a report outlining how local authorities can comply with changes in the law. ADBA's report can be found [here](https://adbioresources.org/food-waste-recycling-and-ad/).
 
-Some AD capacity may already exist. AD plants receive a range of waste streams, and not all AD plants will be able to take household food waste. Any existing AD capacity, may therefore not equal to "free" capacity for food waste, and the additional capacity stated above may still be required as an addition. Suffolk's current composition and volume of AD treatment waste received will be covered in Section 4.
+AD plants receive a range of waste streams, and not all AD plants will be able to take household food waste. Any existing AD capacity, may therefore not equal to "free" capacity for food waste, and the additional capacity stated above may still be required as an addition. Suffolk's current composition and volume of AD treatment waste received will be covered in Section 4.
 
 \newpage
 
@@ -587,7 +587,7 @@ ad_summary_yearly |>
   flextable::theme_vanilla()
 ```
 
-The tonnage of waste treated in 2021, totals `r totals_formatting(sum(ad_summary$tonnes))` t. All waste treated here is classed as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site". These sites are therefore will not accept municipa
+The tonnage of waste treated in 2021, totals **`r totals_formatting(sum(ad_2021$tonnes))`t**. All waste treated here is classed as "animal faeces, urine and manure (including spoiled straw), effluent, collected separately and treated off-site". These sites therefore do not currently accept municipal food waste, nor may they be suitable to do so.
 
 ## Waste to Landfill
 
