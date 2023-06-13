@@ -1,5 +1,5 @@
 ---
-title: "WIP: Suffolk Annual Waste Monitoring Report 21/22"
+title: "Suffolk Annual Waste Monitoring Report 21/22"
 scctemplate:
   header:
     site_branding: "Suffolk County Council"

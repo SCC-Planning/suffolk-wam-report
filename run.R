@@ -9,4 +9,4 @@ rlc_data <- read_rcl(folder)
 
 render_wam_report_site(wdi_data, lacw_data, rlc_data)
 
-# rmarkdown::render("index.rmd", output_format = "pdf_document")
+rmarkdown::render("index.rmd", output_format = "word_document2")
