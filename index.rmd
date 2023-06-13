@@ -543,7 +543,7 @@ sccthemes::scc_barchart_grouped(
 
 ```
 
-### Waste to Anaerobic Landfill
+### Waste to Anaerobic Digestion
 Following on from the Case Study: Food Waste Collection, current anaerobic digestion treatment in Suffolk is presented in Table \@ref(tab:tabad).
 
 ```{r waste_to_anaerobic, warning = FALSE, ft.align = "center", tab.id='tabad', label = 'tabad', tab.cap =  "Source: [Waste Data Interrogator 2019](https://find-data-beta.cloudapps.digital/dataset/d409b2ba-796c-4436-82c7-eb1831a9ef25/2019-waste-data-interrogator), [2020](https://www.data.gov.uk/dataset/bb40d091-a346-4b75-aa54-df7d347bed93/2020-waste-data-interrogator) and [2021](https://www.data.gov.uk/dataset/d8a12b93-03ef-4fbf-9a43-1ca7a054479c/2021-waste-data-interrogator)."}
@@ -980,8 +980,6 @@ This destination alone counts for **`r round((numeric_thetford$tonnes/sum(numeri
 This is a destination that should be monitored in future reports. However, due to its close proximity to the border, it is unlikely that the provision of an alternative site needs to be provided, or would indeed be viable for this waste stream, unless the tonnage grows significantly.
 
 While this site changes Suffolk from a net recipient to a net exporter of waste, and therefore technically making Suffolk not net self-sufficient, due to the factors described above no further action or policy changes is required.
-
-**TZ: There is probably a better, more formal way of describing this.**
 
 \newpage
 
