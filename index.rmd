@@ -940,7 +940,7 @@ wdi_norfolk[1:7, ] |>
 ```
 
 In 2019, `r totals_formatting(aw2019)` tonnes of sludges were sent to Whitlingham Sludge Treatment Centre, Thetford Sludge Treatment Centre and King's Lynn Sludge Treatment Centre in Norfolk by Anglian Water.
-In 2020, `r totals_formatting(aw2020)` tonnes of sludges were sent to these facilities, and `r totals_formatting(aw2021)` in 2021.
+In 2020, `r totals_formatting(aw2020)` tonnes of sludges were sent to these facilities, and `r totals_formatting(aw2021)` tonnes in 2021.
 
 Although in 2020 the total nearly halved, the reduction 2021 has slowed.
 This implies that there is still a shortage of waste water treatment capacity in Suffolk and discussions with the Anglian Water would be useful to identify their needs to enable Suffolk to become more self-sufficient in managing this waste stream.
